@@ -1,9 +1,9 @@
 <script lang="ts">
-	import P5 from '$lib/P5.svelte';
+	import { P5, P5Kit } from '$lib/index.js';
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 
-	const sketch: Sketch = (p5: p5) => {
+	const userSketch: Sketch = (p5: p5) => {
 		p5.setup = () => {
 			p5.createCanvas(700, 700);
 		};
@@ -16,4 +16,6 @@
 	};
 </script>
 
-<P5 {sketch} />
+<P5Kit>
+	<P5 {userSketch} />
+</P5Kit>

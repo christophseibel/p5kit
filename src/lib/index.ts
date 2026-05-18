@@ -2,6 +2,7 @@
 
 import type p5 from 'p5';
 import P5 from './P5.svelte';
+import P5Kit from './P5Kit.svelte';
 
 declare global {
 	interface Window {
@@ -12,4 +13,4 @@ declare global {
 type Sketch = (sketch: p5) => void;
 
 export type { Sketch };
-export { P5 };
+export { P5, P5Kit };
