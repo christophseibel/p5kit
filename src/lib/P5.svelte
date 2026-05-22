@@ -5,7 +5,6 @@
 
 	interface SketchProps {
 		userSketch: (p: p5) => void;
-		target?: HTMLElement;
 		disableFriendlyErrors?: boolean;
 		parentDivStyle?: string;
 		debug?: boolean;
@@ -15,7 +14,6 @@
 
 	let {
 		userSketch,
-		target,
 		disableFriendlyErrors = true,
 		parentDivStyle = 'display: block;',
 		debug = false,
@@ -24,27 +22,28 @@
 	}: SketchProps = $props();
 
 	let kitSketch: p5 | undefined = undefined;
-	const engine = getContext<Engine>('p5kit-engine');
+	let container: HTMLDivElement | undefined;
+	const engine = getContext<Engine | null>('p5kit-engine');
 
-	function ref(node: HTMLElement) {
-		target = node;
+	function ref(node: HTMLDivElement) {
+		container = node;
 		onRef(node);
 		return {
 			destroy() {
-				target = undefined;
+				container = undefined;
 			}
 		};
 	}
 
-	// function augmentClasses<NativeClasses extends [string, Record<string, any>][]>(
-	// 	instance: p5,
-	// 	classes: NativeClasses
-	// ) {
-	// 	classes.forEach(([key, value]) => {
-	// 		(instance as Record<string, any>)[key] = value;
-	// 	});
-	// 	return instance;
-	// }
+	/*function augmentClasses<NativeClasses extends [string, Record<string, any>][]>(
+		instance: p5,
+		classes: NativeClasses
+	) {
+		classes.forEach(([key, value]) => {
+			(instance as Record<string, any>)[key] = value;
+		});
+		return instance;
+	}*/
 
 	onMount(async () => {
 		const library = await import('p5');
@@ -60,25 +59,20 @@
 		// 	console.log('available p5 native classes', nativeClasses);
 		// }
 
+		userSketch = engine ? engine.wrap(userSketch) : userSketch;
+
 		kitSketch = new p5((instance: p5) => {
 			userSketch(instance);
-
-			const userDraw = instance.draw;
-			instance.draw = () => {
-				instance.push();
-				instance.background(255);
-				instance.rectMode(instance.CENTER);
-				instance.fill(255, 0, 0);
-				instance.rect(instance.width / 2, instance.height / 2, 200, 200);
-				instance.pop();
-				userDraw();
+			const userSetup = instance.setup;
+			instance.setup = async () => {
+				userSetup?.();
+				engine?.registerInstance(instance, container!);
 			};
 			// instance = augmentClasses(instance, nativeClasses);
 			if (debug) console.log('p5 instance', instance);
 			window._p5Instance = instance;
-		}, target);
+		}, container);
 
-		engine.registerInstance(kitSketch);
 		onInstance(kitSketch);
 	});
 
@@ -88,4 +82,10 @@
 	});
 </script>
 
-<div use:ref style={parentDivStyle}></div>
+<div use:ref style={parentDivStyle} id="canvasContainer"></div>
+
+<style>
+	:global(canvas) {
+		display: block;
+	}
+</style>
