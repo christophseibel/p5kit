@@ -38,8 +38,6 @@
 
 <!-- Input Fields: Bind directly to width and height -->
 <div class="controls">
-	<input type="number" bind:value={width} />
-	<input type="number" bind:value={height} />
 	<select
 		value={selectedPreset?.name ?? ''}
 		onchange={(e) => {
@@ -54,4 +52,23 @@
 			<option value={option.name}>{option.name} ({option.x}x{option.y})</option>
 		{/each}
 	</select>
+	<input type="number" bind:value={width} />
+	<input type="number" bind:value={height} />
 </div>
+
+<style>
+	.controls {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		row-gap: 10px;
+		column-gap: 10px;
+		padding: 10px;
+		background-color: red;
+	}
+
+	select {
+		grid-column-start: 1;
+		grid-column-end: span 2;
+	}
+</style>
