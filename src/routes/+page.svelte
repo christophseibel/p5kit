@@ -26,7 +26,7 @@
 <style>
 	:global(body) {
 		margin: unset;
-		height: 50vh;
+		height: 100vh;
 		width: 100vw;
 	}
 </style>
