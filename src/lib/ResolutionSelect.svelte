@@ -18,8 +18,8 @@
 		$props();
 
 	// 1. Width and Height are now the "Source of Truth" ($state)
-	let width = $state(resolutionOptions[0].x);
-	let height = $state(resolutionOptions[0].y);
+	let width = $state(defaultResolutions[0].x);
+	let height = $state(defaultResolutions[0].y);
 
 	// 2. A helper to find which preset matches current width/height
 	// This keeps the dropdown in sync when you type manually
@@ -65,6 +65,7 @@
 		column-gap: 10px;
 		padding: 10px;
 		background-color: red;
+		height: fit-content;
 	}
 
 	select {

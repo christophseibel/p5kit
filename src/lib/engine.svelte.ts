@@ -22,15 +22,6 @@ class Engine {
 
 			instance.draw = () => {
 				if (userDraw) userDraw();
-				instance.push();
-				instance.fill(255, 0, 0);
-				instance.rect(
-					instance.width / 2,
-					instance.height / 2,
-					instance.width / 6,
-					instance.height / 6
-				);
-				instance.pop();
 			};
 
 			instance.windowResized = (event: UIEvent) => {
@@ -76,6 +67,10 @@ class Engine {
 
 		this.containCanvas();
 		this.containCanvas();
+	};
+
+	exportImage = () => {
+		this.instance?.saveCanvas();
 	};
 
 	registerInstance(instance: p5, container: HTMLDivElement) {
