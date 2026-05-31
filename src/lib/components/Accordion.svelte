@@ -25,13 +25,12 @@
 	:global([data-accordion-root]) {
 		width: 100%;
 		height: fit-content;
-		padding: 0 var(--ui-padding) 0 var(--ui-padding);
 		box-sizing: border-box;
-		background-color: var(--ui-bg);
+		background-color: light-dark(var(--gray-200), var(--gray-800));
 	}
 
 	:global([data-accordion-item]) {
-		border-bottom: var(--ui-border) solid 1px;
+		border-bottom: var(--gray-700) solid 1px;
 	}
 
 	:global([data-accordion-trigger]) {
@@ -42,9 +41,9 @@
 		background: none;
 		border: unset;
 		cursor: pointer;
-		padding: var(--ui-padding);
+		padding: var(--ui-spacing) calc(1.5 * var(--ui-spacing)) var(--ui-spacing) var(--ui-spacing);
 		font-size: var(--ui-text);
-		color: var(--text-base);
+		color: light-dark(var(--gray-950), var(--gray-50));
 
 		& > span > svg {
 			transition: transform 0.2s ease;
@@ -58,7 +57,7 @@
 	}
 
 	#content {
-		padding: 10px;
+		padding: 0 var(--ui-spacing) var(--ui-spacing);
 	}
 
 	:global([data-accordion-content]) {

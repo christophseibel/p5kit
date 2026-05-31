@@ -2,6 +2,7 @@
 	import { setContext } from 'svelte';
 	import { createEngine, type Engine } from './engine.svelte.ts';
 	import type { Snippet } from 'svelte';
+	import '$lib/style.css';
 
 	let { children }: { children?: Snippet } = $props();
 
@@ -30,5 +31,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background-color: light-dark(var(--gray-50), var(--gray-950));
 	}
 </style>

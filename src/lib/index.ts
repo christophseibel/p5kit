@@ -2,7 +2,7 @@
 
 import type p5 from 'p5';
 import P5 from './components/P5.svelte';
-import P5Kit from './P5Kit.svelte';
+import P5Kit from './components/P5Kit.svelte';
 import ResolutionSelect from './components/ResolutionSelect.svelte';
 import ImageExport from './components/ImageExport.svelte';
 import Accordion from './components/Accordion.svelte';
