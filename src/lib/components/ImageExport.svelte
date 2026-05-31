@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { Engine } from './engine.svelte.ts';
+	import type { Engine } from '../engine.svelte.ts';
+	import Accordion from './Accordion.svelte';
 
 	let engine: Engine | undefined = $state();
 
@@ -9,6 +10,8 @@
 	});
 </script>
 
-<button onclick={engine?.exportImage}>Export Image!</button>
+<Accordion title="Image Export"
+	><button onclick={engine?.exportImage}>Export Image!</button></Accordion
+>
 
 <style></style>

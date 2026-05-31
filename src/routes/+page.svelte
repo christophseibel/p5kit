@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { P5, P5Kit, ResolutionSelect, ImageExport } from '$lib/index.js';
+	import { P5, P5Kit, ResolutionSelect, ImageExport, Accordion } from '$lib/index.js';
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 
@@ -24,8 +24,7 @@
 
 <P5Kit>
 	<div id="container">
-		<div id="controlls"><ResolutionSelect /> <ImageExport /></div>
-
+		<div id="controls"><ResolutionSelect /> <ImageExport /></div>
 		<div id="sketch"><P5 userSketch={sketch} parentDivStyle={'background: purple;'} /></div>
 	</div>
 </P5Kit>
@@ -44,10 +43,9 @@
 		flex-direction: row;
 		justify-content: space-between;
 		gap: 20px;
-		background-color: antiquewhite;
 	}
 
-	#controlls {
+	#controls {
 		height: 100%;
 		width: 500px;
 		display: flex;

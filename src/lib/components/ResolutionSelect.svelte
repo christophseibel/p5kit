@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { Engine } from './engine.svelte.ts';
+	import type { Engine } from '../engine.svelte.ts';
+	import Select from './Select.svelte';
+	import Accordion from './Accordion.svelte';
+	import '$lib/style.css';
 
 	interface resolutionOptions {
 		name: string;
@@ -34,11 +37,17 @@
 			engine.resizeCanvas(width, height);
 		});
 	});
+
+	const items = [
+		{ value: 'apple', label: 'Apple' },
+		{ value: 'banana', label: 'Banana' },
+		{ value: 'cherry', label: 'Cherry' }
+	];
 </script>
 
-<!-- Input Fields: Bind directly to width and height -->
-<div class="controls">
-	<select
+<Accordion title="Resolution">
+	<div class="controls">
+		<!-- <select
 		value={selectedPreset?.name ?? ''}
 		onchange={(e) => {
 			const opt = resolutionOptions.find((o) => o.name === e.currentTarget.value);
@@ -51,10 +60,14 @@
 		{#each resolutionOptions as option}
 			<option value={option.name}>{option.name} ({option.x}x{option.y})</option>
 		{/each}
-	</select>
-	<input type="number" bind:value={width} />
-	<input type="number" bind:value={height} />
-</div>
+	</select> -->
+		<p>test</p>
+		<input type="number" bind:value={width} />
+		<input type="number" bind:value={height} />
+	</div>
+</Accordion>
+
+<!-- Input Fields: Bind directly to width and height -->
 
 <style>
 	.controls {
@@ -63,9 +76,9 @@
 		grid-template-rows: 1fr 1fr;
 		row-gap: 10px;
 		column-gap: 10px;
-		padding: 10px;
-		background-color: red;
 		height: fit-content;
+		font-size: var(--ui-text);
+		color: var(--text-base);
 	}
 
 	select {

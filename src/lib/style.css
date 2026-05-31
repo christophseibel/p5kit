@@ -1,0 +1,15 @@
+:root {
+	--ui-bg: rgb(31, 32, 34);
+	--ui-border: rgb(65, 67, 70);
+	--text-base: rgb(255, 255, 255);
+	--text-disabled: rgb(150, 150, 150);
+
+	--ui-text: 0.8rem;
+	--ui-padding: 10px;
+}
+
+html {
+	font-family:
+		-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
