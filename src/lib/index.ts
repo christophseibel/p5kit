@@ -6,6 +6,7 @@ import P5Kit from './components/P5Kit.svelte';
 import ResolutionSelect from './components/ResolutionSelect.svelte';
 import Export from './components/Export.svelte';
 import Accordion from './components/Accordion.svelte';
+import ColorPicker from './components/ColorPicker.svelte';
 
 declare global {
 	interface Window {
@@ -16,4 +17,4 @@ declare global {
 type Sketch = (sketch: p5) => void;
 
 export type { Sketch };
-export { P5, P5Kit, ResolutionSelect, Export, Accordion };
+export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker };

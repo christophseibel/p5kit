@@ -48,14 +48,16 @@
 		const { default: p5 } = library;
 		p5.disableFriendlyErrors = disableFriendlyErrors;
 
-		// const entries = Object.entries(p5).filter(([key]) => key[0] !== '_');
-		// const nativeClasses = entries.filter(
-		// 	([key, value]) => typeof value === 'function' && key !== 'default'
-		// );
+		const entries = Object.entries(p5).filter(([key]) => key[0] !== '_');
+		const nativeClasses = entries.filter(
+			([key, value]) => typeof value === 'function' && key !== 'default'
+		);
 
-		// if (debug) {
-		// 	console.log('available p5 native classes', nativeClasses);
-		// }
+		console.log('available p5 native classes', nativeClasses);
+
+		if (debug) {
+			console.log('available p5 native classes', nativeClasses);
+		}
 
 		userSketch = engine ? engine.wrap(userSketch) : userSketch;
 

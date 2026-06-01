@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { P5, P5Kit, ResolutionSelect, Export, Accordion } from '$lib/index.js';
+	import { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker } from '$lib/index.js';
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 	// import '$lib/style.css';
 
 	let resetFrame = $state(() => {});
+	let color: p5.Color;
 
 	const sketch: Sketch = (p5: p5) => {
 		p5.setup = async () => {
@@ -27,7 +28,10 @@
 
 <P5Kit>
 	<div id="container">
-		<div id="controls"><ResolutionSelect /><Export onExport={resetFrame} /></div>
+		<div id="controls">
+			<ResolutionSelect /><Export onExport={resetFrame} />
+			<Accordion title="Color"><ColorPicker></ColorPicker></Accordion>
+		</div>
 		<div id="sketch">
 			<P5 userSketch={sketch} />
 		</div>

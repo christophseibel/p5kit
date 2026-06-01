@@ -59,10 +59,6 @@
 		padding: 0 var(--ui-spacing) var(--ui-spacing);
 	}
 
-	:global([data-accordion-content]) {
-		overflow: hidden;
-	}
-
 	:global([data-accordion-content][data-state='open']) {
 		animation: accordion-down 0.1s ease-out;
 	}
