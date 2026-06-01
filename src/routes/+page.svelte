@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { P5, P5Kit, ResolutionSelect, ImageExport, Accordion } from '$lib/index.js';
+	import { P5, P5Kit, ResolutionSelect, Export, Accordion } from '$lib/index.js';
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
-	import Select from '$lib/components/Select.svelte';
+	// import '$lib/style.css';
+
+	let resetFrame = $state(() => {});
 
 	const sketch: Sketch = (p5: p5) => {
 		p5.setup = async () => {
@@ -14,43 +16,21 @@
 		p5.draw = () => {
 			p5.background(255);
 			p5.fill(0);
-			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount) * 100, 100);
+			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 300, 100);
 		};
 
-		p5.keyPressed = () => {
+		resetFrame = () => {
 			(p5 as any).frameCount = 0;
 		};
 	};
-
-	const themes = [
-		{ value: 'light-monochrome', label: 'Light Monochrome' },
-		{ value: 'dark-green', label: 'Dark Green' },
-		{ value: 'svelte-orange', label: 'Svelte Orange' },
-		{ value: 'punk-pink', label: 'Punk Pink' },
-		{ value: 'ocean-blue', label: 'Ocean Blue', disabled: true },
-		{ value: 'sunset-orange', label: 'Sunset Orange' },
-		{ value: 'sunset-red', label: 'Sunset Red' },
-		{ value: 'forest-green', label: 'Forest Green' },
-		{ value: 'lavender-purple', label: 'Lavender Purple', disabled: true },
-		{ value: 'mustard-yellow', label: 'Mustard Yellow' },
-		{ value: 'slate-gray', label: 'Slate Gray' },
-		{ value: 'neon-green', label: 'Neon Green' },
-		{ value: 'coral-reef', label: 'Coral Reef' },
-		{ value: 'midnight-blue', label: 'Midnight Blue' },
-		{ value: 'crimson-red', label: 'Crimson Red' },
-		{ value: 'mint-green', label: 'Mint Green' },
-		{ value: 'pastel-pink', label: 'Pastel Pink' },
-		{ value: 'golden-yellow', label: 'Golden Yellow' },
-		{ value: 'deep-purple', label: 'Deep Purple' },
-		{ value: 'turquoise-blue', label: 'Turquoise Blue' },
-		{ value: 'burnt-orange', label: 'Burnt Orange' }
-	];
 </script>
 
 <P5Kit>
 	<div id="container">
-		<div id="controls"><ResolutionSelect /><ImageExport /></div>
-		<div id="sketch"><P5 userSketch={sketch} /></div>
+		<div id="controls"><ResolutionSelect /><Export onExport={resetFrame} /></div>
+		<div id="sketch">
+			<P5 userSketch={sketch} />
+		</div>
 	</div>
 </P5Kit>
 
@@ -61,23 +41,44 @@
 		width: 100vw;
 	}
 
-	#container {
+	:global(#p5kit-container) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	:global(#p5kit) {
 		height: 100%;
 		width: 100%;
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		gap: 20px;
+		align-items: center;
+		justify-content: center;
+		background-color: light-dark(var(--gray-50), var(--gray-950));
+	}
+
+	#container {
+		height: 100vh;
+		width: 100vw;
+		display: grid;
+		grid-template-columns: 400px 1fr;
+		/* gap: 20px; */
 	}
 
 	#controls {
 		height: 100%;
-		width: 500px;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
+		background-color: var(--gray-900);
+		grid-column-start: 1;
+		grid-column-end: 2;
 	}
 
 	#sketch {
-		width: 800px;
+		width: 100%;
+		grid-column-start: 2;
+		grid-column-end: 3;
+		min-width: 0;
+		min-height: 0;
 	}
 </style>

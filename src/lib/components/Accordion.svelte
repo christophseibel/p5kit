@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Accordion } from 'bits-ui';
 	import { CaretDownIcon } from 'phosphor-svelte';
-	import '$lib/style.css';
 
 	let { title, children, ...restProps } = $props();
 </script>

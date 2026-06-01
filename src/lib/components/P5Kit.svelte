@@ -12,25 +12,13 @@
 
 	$effect(() => {
 		if (engine?.canvas) {
-			console.log('canvas ready');
 			engine.containCanvas();
 		}
 	});
 </script>
 
-<div id="p5-kit">
+<div id="p5kit">
 	{#if children}
 		{@render children()}
 	{/if}
 </div>
-
-<style>
-	#p5-kit {
-		height: 100%;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: light-dark(var(--gray-50), var(--gray-950));
-	}
-</style>

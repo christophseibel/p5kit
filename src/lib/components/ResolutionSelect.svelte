@@ -3,7 +3,6 @@
 	import type { Engine } from './engine.svelte.ts';
 	import Select from './Select.svelte';
 	import Accordion from './Accordion.svelte';
-	import '$lib/style.css';
 	import { Label } from 'bits-ui';
 	import { CropIcon } from 'phosphor-svelte';
 
@@ -111,6 +110,7 @@
 		border: unset;
 		color: white;
 		padding: var(--ui-padding);
+		font-size: var(--ui-text);
 	}
 
 	input[type='number']::-webkit-inner-spin-button,

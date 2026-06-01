@@ -6,7 +6,6 @@
 	interface SketchProps {
 		userSketch: (p: p5) => void;
 		disableFriendlyErrors?: boolean;
-		parentDivStyle?: string;
 		debug?: boolean;
 		onRef?: (el: HTMLElement) => void;
 		onInstance?: (p5Instance: p5) => void;
@@ -15,7 +14,6 @@
 	let {
 		userSketch,
 		disableFriendlyErrors = true,
-		parentDivStyle = 'display: block;',
 		debug = false,
 		onRef = () => {},
 		onInstance = () => {}
@@ -82,7 +80,7 @@
 	});
 </script>
 
-<div use:ref style={parentDivStyle} id="canvasContainer"></div>
+<div use:ref id="p5kit-container"></div>
 
 <style>
 	:global(canvas) {

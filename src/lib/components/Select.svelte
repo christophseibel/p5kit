@@ -3,27 +3,17 @@
 	import { CaretDownIcon, VectorTwoIcon } from 'phosphor-svelte';
 	import type { Snippet } from 'svelte';
 
-	import '$lib/style.css';
-
 	type Props = WithoutChildren<Select.RootProps> & {
 		placeholder?: string;
 		items: { value: string; label: string; disabled?: boolean }[];
 		contentProps?: WithoutChildren<Select.ContentProps>;
 		icon?: Snippet;
-		// any other specific component props if needed
 	};
 
-	let {
-		value = $bindable(),
-		items,
-		contentProps,
-		placeholder,
-		icon,
-		...restProps
-	}: Props = $props();
+	let { value = $bindable(), items, contentProps, placeholder, icon }: Props = $props();
 </script>
 
-<Select.Root bind:value={value as never} type="single" {items}>
+<Select.Root bind:value={value as never} type="single" {items} {...contentProps}>
 	<Select.Trigger aria-label={placeholder}>
 		<Select.Value>
 			{#snippet children({ selection, placeholder, disabled })}
@@ -64,6 +54,7 @@
 		border-radius: var(--ui-border);
 		color: var(--gray-50);
 		padding: unset;
+		font-size: var(--ui-text);
 	}
 
 	:global([data-select-value]) {
@@ -71,6 +62,7 @@
 		gap: var(--ui-padding);
 		cursor: pointer;
 		padding: var(--ui-padding);
+		align-items: center;
 
 		& > #icon > svg {
 			color: var(--gray-500);
@@ -97,7 +89,6 @@
 		font-size: var(--ui-text);
 		gap: var(--ui-padding);
 		padding: var(--ui-padding);
-		box-shadow: 0 0 2px 2px var(--gray-900);
 	}
 
 	:global([data-select-item]) {
