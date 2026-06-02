@@ -1,22 +1,24 @@
 <script lang="ts">
 	import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker';
+	import type { RgbaColor } from 'svelte-awesome-color-picker';
 	import ColorPickerInput from './ColorPickerInput.svelte';
 
-	let rawHex = $state('ff0000');
-	let pickerHex = $state('#ff0000');
+	let { hex = $bindable('#ff0000') } = $props();
+
+	let rawHex = $state(hex.replace('#', ''));
 
 	$effect(() => {
-		pickerHex = `#${rawHex}`;
+		hex = `#${rawHex}`;
 	});
 
 	$effect(() => {
-		rawHex = pickerHex.replace('#', '');
+		rawHex = hex.replace('#', '');
 	});
 </script>
 
 <div id="p5kit-colorpicker">
 	<ColorPicker
-		bind:hex={pickerHex}
+		bind:hex
 		components={{ input: ColorPickerInput }}
 		label=""
 		isTextInput={false}
