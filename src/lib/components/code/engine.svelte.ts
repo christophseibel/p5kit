@@ -1,9 +1,12 @@
 import type p5 from 'p5';
+import { saveToFFmpeg } from './ffmpeg.svelte.ts';
 
 class Engine {
 	instance = $state<p5 | undefined>(undefined);
 	container = $state<HTMLDivElement | undefined>(undefined);
 	canvas = $state<HTMLCanvasElement | undefined>(undefined);
+
+	isRecording = $state(false);
 
 	wrap = (sketch: (p: p5) => void) => {
 		return (instance: p5) => {
@@ -17,11 +20,14 @@ class Engine {
 			} = instance;
 
 			instance.setup = async () => {
-				if (userSetup) userSetup();
+				userSetup?.();
 			};
 
 			instance.draw = () => {
-				if (userDraw) userDraw();
+				userDraw?.();
+				if (this.isRecording && this.canvas) {
+					saveToFFmpeg(this.canvas);
+				}
 			};
 
 			instance.windowResized = (event: UIEvent) => {
@@ -79,6 +85,14 @@ class Engine {
 		this.canvas = this.container.getElementsByTagName('canvas')[0];
 		this.container.style.height = '100%';
 		this.container.style.width = '100%';
+	}
+
+	startExport() {
+		this.isRecording = true;
+	}
+
+	stopExport() {
+		this.isRecording = false;
 	}
 }
 

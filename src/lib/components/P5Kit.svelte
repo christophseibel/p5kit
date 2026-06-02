@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import { createEngine, type Engine } from './engine.svelte.ts';
+	import { createEngine, type Engine } from './code/engine.svelte.ts';
 	import type { Snippet } from 'svelte';
 	import '$lib/style.css';
 
