@@ -44,7 +44,10 @@ export class VideoExporter {
 		this.frameID++;
 
 		this.frameWriteQueue = this.frameWriteQueue
-			.then(() => this.ffmpegSaveFrame(currentFrameId, pngData))
+			.then(() => {
+				console.log('saving frame!');
+				this.ffmpegSaveFrame(currentFrameId, pngData);
+			})
 			.catch((error) => {
 				console.error(`Failed to save frame ${currentFrameId}.`, error);
 			});

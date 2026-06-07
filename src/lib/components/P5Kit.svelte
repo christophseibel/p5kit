@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { createEngine, type Engine } from './code/engine.svelte.ts';
 	import type { Snippet } from 'svelte';
 	import '$lib/style.css';
-
-	let { children }: { children?: Snippet } = $props();
 
 	const engine = createEngine();
 
@@ -15,6 +13,8 @@
 			engine.containCanvas();
 		}
 	});
+
+	let { children }: { children?: Snippet } = $props();
 </script>
 
 <div id="p5kit">

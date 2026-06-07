@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { Button, type WithoutChildren } from 'bits-ui';
+	import type { ComponentProps, Snippet } from 'svelte';
 
-	let { children, ...props } = $props();
+	type Props = Button.RootProps & { abort?: boolean };
+
+	let { children, abort = false, ...props }: Props = $props();
 </script>
 
-<Button.Root {...props}>
-	{@render children()}
+<Button.Root class={abort ? 'abort' : ''} {...props}>
+	{@render children?.()}
 </Button.Root>
 
 <style>
@@ -25,6 +28,10 @@
 		& > svg {
 			color: var(--gray-300);
 		}
+	}
+
+	:global(.abort) {
+		background-color: color-mix(in srgb, light-dark(var(--gray-400), var(--gray-600)), red);
 	}
 
 	:global([data-button-root]):active {

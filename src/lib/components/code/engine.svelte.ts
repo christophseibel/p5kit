@@ -5,7 +5,7 @@ class Engine {
 	instance = $state<p5 | undefined>(undefined);
 	container = $state<HTMLDivElement | undefined>(undefined);
 	canvas = $state<HTMLCanvasElement | undefined>(undefined);
-	videoExporter = new VideoExporter();
+	videoExporter = $state<VideoExporter | undefined>(undefined);
 
 	isRecording = $state(false);
 
@@ -27,7 +27,7 @@ class Engine {
 			instance.draw = () => {
 				userDraw?.();
 				if (this.isRecording && this.canvas) {
-					this.videoExporter.saveToFFmpeg(this.canvas);
+					this.videoExporter?.saveToFFmpeg(this.canvas);
 				}
 			};
 
@@ -76,8 +76,8 @@ class Engine {
 		this.containCanvas();
 	};
 
-	exportImage = () => {
-		this.instance?.saveCanvas();
+	exportImage = (format: string) => {
+		this.instance?.saveCanvas('untitled', format);
 	};
 
 	async registerInstance(instance: p5, container: HTMLDivElement) {
@@ -86,6 +86,8 @@ class Engine {
 		this.canvas = this.container.getElementsByTagName('canvas')[0];
 		this.container.style.height = '100%';
 		this.container.style.width = '100%';
+
+		this.videoExporter = new VideoExporter();
 		await this.videoExporter.loadFFmpeg();
 	}
 

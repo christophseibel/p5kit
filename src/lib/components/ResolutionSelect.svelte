@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { Engine } from './engine.svelte.ts';
+	import type { Engine } from './code/engine.svelte.ts';
 	import Select from './Select.svelte';
 	import Accordion from './Accordion.svelte';
-	import { Label } from 'bits-ui';
+	import Input from './Input.svelte';
 	import { CropIcon } from 'phosphor-svelte';
+	import type p5 from 'p5';
 
 	interface resolutionOptions {
 		label: string;
@@ -22,27 +23,26 @@
 		{ label: '4/5 | W: 1080 H: 1350', value: JSON.stringify({ x: 1080, y: 1350 }) }
 	];
 
-	let { resolutionOptions = defaultResolutions }: { resolutionOptions?: resolutionOptions[] } =
-		$props();
-
-	// FIX 2: Initialize with a valid string from your array
 	let currentSelection = $state(defaultResolutions[0].value);
 
 	$effect(() => {
 		console.log(currentSelection);
 	});
 
-	// Derive width/height from the current selection string
 	let width = $derived(parseResolution(currentSelection).x);
 	let height = $derived(parseResolution(currentSelection).y);
 
-	// 3. Sync the engine whenever width or height changes
-	onMount(() => {
-		const engine = getContext<Engine>('p5kit-engine');
-		$effect(() => {
-			engine.resizeCanvas(width, height);
-		});
+	const engine = getContext<Engine>('p5kit-engine');
+
+	$effect(() => {
+		engine.resizeCanvas(width, height);
+		if (engine.instance) onResize(engine.instance);
 	});
+
+	let {
+		resolutionOptions = defaultResolutions,
+		onResize = () => {}
+	}: { resolutionOptions?: resolutionOptions[]; onResize?: (p5: p5) => void } = $props();
 
 	function parseResolution(value: string): Resolution {
 		let parsed: Resolution;
@@ -65,24 +65,17 @@
 <Accordion title="Resolution">
 	<div class="controls">
 		<div class="element">
-			<Select
-				name="resolutionSelect"
-				items={resolutionOptions}
-				type="single"
-				bind:value={currentSelection}
-			>
+			<Select items={resolutionOptions} type="single" bind:value={currentSelection}>
 				{#snippet icon()}
 					<CropIcon size={14} />
 				{/snippet}</Select
 			>
 		</div>
 
-		<input type="number" bind:value={width} />
-		<input type="number" bind:value={height} />
+		<Input type="number" bind:value={width} />
+		<Input type="number" bind:value={height} />
 	</div>
 </Accordion>
-
-<!-- Input Fields: Bind directly to width and height -->
 
 <style>
 	.controls {
@@ -101,21 +94,5 @@
 		flex-direction: column;
 		grid-column-start: 1;
 		grid-column-end: 3;
-		width: 100%;
-	}
-
-	input[type='number'] {
-		background-color: var(--gray-700);
-		border-radius: var(--ui-border);
-		border: unset;
-		color: white;
-		padding: var(--ui-padding);
-		font-size: var(--ui-text);
-	}
-
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
 	}
 </style>

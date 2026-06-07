@@ -64,7 +64,7 @@
 			const userSetup = instance.setup;
 			instance.setup = async () => {
 				userSetup?.();
-				engine?.registerInstance(instance, container!);
+				await engine?.registerInstance(instance, container!);
 			};
 			// instance = augmentClasses(instance, nativeClasses);
 			if (debug) console.log('p5 instance', instance);

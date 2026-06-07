@@ -2,6 +2,7 @@
 	import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker';
 	import type { RgbaColor } from 'svelte-awesome-color-picker';
 	import ColorPickerInput from './ColorPickerInput.svelte';
+	import Input from './Input.svelte';
 
 	let { hex = $bindable('#ff0000') } = $props();
 
@@ -53,11 +54,15 @@
 		display: flex;
 		align-items: center;
 		gap: 1px;
+		width: 100%;
 	}
 
 	input {
-		width: 100%;
-		background-color: unset;
+		background-color: var(--gray-700);
+		border-radius: var(--ui-border);
 		border: unset;
+		color: white;
+		font-size: var(--ui-text);
+		width: 100%;
 	}
 </style>

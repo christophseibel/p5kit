@@ -35,6 +35,7 @@
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/package": "^2.5.7",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"animejs": "^4.4.1",
 		"p5": "^2.2.3",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.5.1",

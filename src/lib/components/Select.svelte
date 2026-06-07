@@ -55,6 +55,7 @@
 		color: var(--gray-50);
 		padding: unset;
 		font-size: var(--ui-text);
+		width: 100%;
 	}
 
 	:global([data-select-value]) {

@@ -11,13 +11,24 @@
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 
+	import { animate, engine, createTimeline, type Timeline } from 'animejs';
+
 	let resetFrame = $state(() => {});
 	let hex = $state('#000000');
 	let circleSize: [number, number] = $state([20, 100]);
+	let position = { x: 0, y: 0 };
+
+	engine.useDefaultMainLoop = false;
+	engine.defaults.frameRate = 60;
+
+	let timeline: Timeline;
+
+	let isRecording: boolean = $state(false);
 
 	const sketch: Sketch = (p5: p5) => {
 		p5.setup = async () => {
 			p5.createCanvas(500, 500);
+			p5.frameRate(60);
 			p5.rectMode(p5.CENTER);
 			p5.angleMode(p5.DEGREES);
 			p5.noStroke();
@@ -26,29 +37,36 @@
 		p5.draw = () => {
 			p5.background(255);
 			p5.fill(hex);
-			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 150, circleSize[1]);
+			p5.ellipse(position.x, position.y, circleSize[1]);
 			p5.fill(255);
-			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 150, circleSize[0]);
-		};
-
-		resetFrame = () => {
-			(p5 as any).frameCount = 0;
+			p5.ellipse(position.x, position.y, circleSize[0]);
+			engine.update();
 		};
 	};
 </script>
 
-<!-- <P5Kit>
-	<P5 userSketch={sketch} />
-</P5Kit> -->
-
 <P5Kit>
 	<div id="container">
 		<div id="controls">
-			<ResolutionSelect></ResolutionSelect>
-			<Export onExport={resetFrame} />
-			<Accordion title="Color"
-				><ColorPicker bind:hex></ColorPicker>
-				<Slider type="range" bind:value={circleSize} min={10} max={200} />
+			<ResolutionSelect
+				onResize={(p5) => {
+					position = { x: p5.width / 2, y: p5.height / 2 };
+					timeline = createTimeline({ loop: true, alternate: true }).add(position, {
+						keyframes: [
+							{ x: 0, duration: 1000 },
+							{ y: 0, duration: 1000 }
+						]
+					});
+				}}
+			/>
+			<Export
+				onExport={() => {
+					timeline.restart();
+				}}
+			/>
+			<Accordion title="Properties">
+				<ColorPicker bind:hex />
+				<Slider type="range" bind:value={circleSize} min={0} max={200} />
 			</Accordion>
 		</div>
 		<div id="sketch"><P5 userSketch={sketch} /></div>
@@ -81,7 +99,7 @@
 		height: 100vh;
 		width: 100vw;
 		display: grid;
-		grid-template-columns: 400px 1fr;
+		grid-template-columns: 300px 1fr;
 	}
 
 	#controls {
