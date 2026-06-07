@@ -13,6 +13,8 @@
 
 	import { animate, engine, createTimeline, type Timeline } from 'animejs';
 
+	import Logo from '$lib/assets/p5.kit-logo.svg';
+
 	let resetFrame = $state(() => {});
 	let hex = $state('#000000');
 	let circleSize: [number, number] = $state([20, 100]);
@@ -73,6 +75,8 @@
 	</div>
 </P5Kit>
 
+<img id="logo" src={Logo} alt="" />
+
 <style>
 	:global(body) {
 		margin: unset;
@@ -110,6 +114,18 @@
 		background-color: var(--gray-900);
 		grid-column-start: 1;
 		grid-column-end: 2;
+	}
+
+	#logo {
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 10px;
+		box-sizing: border-box;
+		width: 100px;
+		cursor: default;
+		touch-action: none;
+		user-select: none;
 	}
 
 	#sketch {
