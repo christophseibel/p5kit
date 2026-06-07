@@ -8,10 +8,12 @@
 		DownloadIcon,
 		VideoCameraIcon,
 		VideoCameraSlashIcon,
-		FileImageIcon
+		FileImageIcon,
+		FileVideoIcon
 	} from 'phosphor-svelte';
 	import Separator from './Separator.svelte';
 	import Select from './Select.svelte';
+	import Progress from './Progress.svelte';
 
 	let engine: Engine | undefined = $state();
 
@@ -28,10 +30,18 @@
 	let defaultImageFormats = [
 		{ label: 'PNG', value: 'png' },
 		{ label: 'JPG', value: 'jpg' },
-		{ label: 'WEBP', value: 'webp' }
+		{ label: 'WEBP', value: 'webp' },
+		{ label: 'EXR', value: 'exr' }
+	];
+
+	let defaultVideoFormats = [
+		{ label: 'MP4', value: 'MP4' },
+		{ label: 'WEBM', value: 'WEBM' },
+		{ label: 'Frame sequence (EXR)', value: 'Frame sequence (EXR)' }
 	];
 
 	let imageFormat = $state(defaultImageFormats[0].value);
+	let videoFormat = $state(defaultVideoFormats[0].value);
 </script>
 
 <Accordion title="Export">
@@ -60,11 +70,11 @@
 	<Separator orientation="horizontal" />
 	<div class="label">
 		<span>Video</span>
-		{#if engine?.isRecording}
+		{#if engine?.isRecording || engine?.isExporting}
 			<Button
 				abort
 				onclick={() => {
-					engine?.stopExport();
+					engine?.abortExport();
 				}}
 			>
 				<VideoCameraSlashIcon size={14} />
@@ -74,7 +84,8 @@
 			<Button
 				onclick={() => {
 					onExport();
-					engine?.startExport();
+					console.log(videoFormat);
+					engine?.startExport(videoFormat);
 				}}
 			>
 				<VideoCameraIcon size={14} />
@@ -82,11 +93,31 @@
 			</Button>
 		{/if}
 	</div>
-
+	<div class="label">
+		<span>Format</span>
+		<Select items={defaultVideoFormats} type="single" bind:value={videoFormat}>
+			{#snippet icon()}
+				<FileVideoIcon size={14} />
+			{/snippet}
+		</Select>
+	</div>
 	<div class="label">
 		<span>Duration (s)</span>
-		<Input type="number" value={10} />
+		<Input
+			type="number"
+			value={10}
+			onChange={(value) => {
+				engine?.updateFrameCount(value);
+				console.log(engine?.animationFrameCount);
+			}}
+		/>
 	</div>
+	{#if engine?.isRecording}
+		<Progress label="Recording" value={engine?.exportProgress} />
+	{/if}
+	{#if engine?.isExporting}
+		<Progress label="Exporting" value={engine?.videoExporter?.exportProgress} />
+	{/if}
 </Accordion>
 
 <style>

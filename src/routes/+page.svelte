@@ -55,8 +55,8 @@
 					position = { x: p5.width / 2, y: p5.height / 2 };
 					timeline = createTimeline({ loop: true, alternate: true }).add(position, {
 						keyframes: [
-							{ x: 0, duration: 1000 },
-							{ y: 0, duration: 1000 }
+							{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 },
+							{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 }
 						]
 					});
 				}}

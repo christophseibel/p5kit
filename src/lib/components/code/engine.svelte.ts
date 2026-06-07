@@ -8,6 +8,9 @@ class Engine {
 	videoExporter = $state<VideoExporter | undefined>(undefined);
 
 	isRecording = $state(false);
+	isExporting = $state(false);
+	animationFrameCount = -1;
+	exportProgress = $state(0);
 
 	wrap = (sketch: (p: p5) => void) => {
 		return (instance: p5) => {
@@ -26,8 +29,19 @@ class Engine {
 
 			instance.draw = () => {
 				userDraw?.();
-				if (this.isRecording && this.canvas) {
-					this.videoExporter?.saveToFFmpeg(this.canvas);
+				if (this.isRecording && this.canvas && this.videoExporter) {
+					if (this.videoExporter.frameID < this.animationFrameCount) {
+						this.videoExporter?.saveToFFmpeg(this.canvas);
+						this.exportProgress = instance.map(
+							this.videoExporter.frameID,
+							0,
+							this.animationFrameCount,
+							0,
+							100
+						);
+					} else {
+						this.stopExport();
+					}
 				}
 			};
 
@@ -89,14 +103,38 @@ class Engine {
 
 		this.videoExporter = new VideoExporter();
 		await this.videoExporter.loadFFmpeg();
+		this.updateFrameCount(10);
 	}
 
-	startExport() {
+	updateFrameCount(duration: number) {
+		if (this.instance)
+			this.animationFrameCount = Math.round(duration * this.instance.getTargetFrameRate());
+	}
+
+	startExport(videoFormat: string) {
 		this.isRecording = true;
+		if (this.videoExporter) this.videoExporter.videoFormat = videoFormat;
 	}
 
 	stopExport() {
 		this.isRecording = false;
+		this.isExporting = true;
+		if (this.instance) {
+			this.videoExporter?.ffmpegCreateVideo(
+				this.instance.width,
+				this.instance.height,
+				this.instance.getTargetFrameRate(),
+				() => {
+					this.isExporting = false;
+				}
+			);
+		}
+	}
+
+	abortExport() {
+		this.isRecording = false;
+		this.isExporting = false;
+		this.videoExporter?.abortExport();
 	}
 }
 
