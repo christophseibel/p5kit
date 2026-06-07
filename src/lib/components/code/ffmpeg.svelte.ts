@@ -1,41 +1,6 @@
 import { FFmpeg, type FSNode } from '@ffmpeg/ffmpeg';
 import type p5 from 'p5';
 
-let ffmpeg: FFmpeg;
-let frameID = 0;
-let frameWriteQueue: Promise<void> = Promise.resolve();
-const FRAMES_DIR = '/frames';
-
-export async function loadFFmpeg() {
-	ffmpeg = new FFmpeg();
-	await ffmpeg.load();
-	ffmpeg.on('log', onFFmpegLog);
-	ffmpeg.on('progress', onFFmpegProgress);
-	console.log(ffmpeg);
-
-	await ffmpeg.createDir(FRAMES_DIR);
-}
-
-export function saveToFFmpeg(canvas: HTMLCanvasElement) {
-	let dataURL = canvas.toDataURL('image/png');
-	let pngData = convertDataURLToBinary(dataURL);
-
-	const currentFrameId = frameID;
-	frameID++;
-
-	frameWriteQueue = frameWriteQueue
-		.then(() => ffmpegSaveFrame(currentFrameId, pngData))
-		.catch((error) => {
-			console.error(`Failed to save frame ${currentFrameId}.`, error);
-		});
-}
-
-async function ffmpegSaveFrame(frameId: number, pngData: Uint8Array) {
-	let fileName = frameId.toString().padStart(6, '0') + '.png';
-	let filePath = `${FRAMES_DIR}/${fileName}`;
-	await ffmpeg.writeFile(filePath, pngData);
-}
-
 function convertDataURLToBinary(dataURL: string) {
 	const base64Index = dataURL.indexOf(';base64,') + ';base64,'.length;
 	const base64 = dataURL.substring(base64Index);
@@ -55,3 +20,39 @@ const onFFmpegLog = ({ message }: { message: string }) => {
 const onFFmpegProgress = ({ progress, time }: { progress: number; time: number }) => {
 	console.log(progress, time);
 };
+
+export class VideoExporter {
+	ffmpeg = new FFmpeg();
+	frameWriteQueue: Promise<void> = Promise.resolve();
+	FRAMES_DIR = '/frames';
+	frameID = 0;
+
+	async loadFFmpeg() {
+		await this.ffmpeg.load();
+		this.ffmpeg.on('log', onFFmpegLog);
+		this.ffmpeg.on('progress', onFFmpegProgress);
+		console.log(this.ffmpeg);
+
+		await this.ffmpeg.createDir(this.FRAMES_DIR);
+	}
+
+	saveToFFmpeg(canvas: HTMLCanvasElement) {
+		let dataURL = canvas.toDataURL('image/png');
+		let pngData = convertDataURLToBinary(dataURL);
+
+		const currentFrameId = this.frameID;
+		this.frameID++;
+
+		this.frameWriteQueue = this.frameWriteQueue
+			.then(() => this.ffmpegSaveFrame(currentFrameId, pngData))
+			.catch((error) => {
+				console.error(`Failed to save frame ${currentFrameId}.`, error);
+			});
+	}
+
+	async ffmpegSaveFrame(frameId: number, pngData: Uint8Array) {
+		let fileName = frameId.toString().padStart(6, '0') + '.png';
+		let filePath = `${this.FRAMES_DIR}/${fileName}`;
+		await this.ffmpeg.writeFile(filePath, pngData);
+	}
+}

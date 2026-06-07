@@ -1,10 +1,11 @@
 import type p5 from 'p5';
-import { saveToFFmpeg } from './ffmpeg.svelte.ts';
+import { VideoExporter } from './ffmpeg.svelte.ts';
 
 class Engine {
 	instance = $state<p5 | undefined>(undefined);
 	container = $state<HTMLDivElement | undefined>(undefined);
 	canvas = $state<HTMLCanvasElement | undefined>(undefined);
+	videoExporter = new VideoExporter();
 
 	isRecording = $state(false);
 
@@ -26,7 +27,7 @@ class Engine {
 			instance.draw = () => {
 				userDraw?.();
 				if (this.isRecording && this.canvas) {
-					saveToFFmpeg(this.canvas);
+					this.videoExporter.saveToFFmpeg(this.canvas);
 				}
 			};
 
@@ -79,12 +80,13 @@ class Engine {
 		this.instance?.saveCanvas();
 	};
 
-	registerInstance(instance: p5, container: HTMLDivElement) {
+	async registerInstance(instance: p5, container: HTMLDivElement) {
 		this.instance = instance;
 		this.container = container;
 		this.canvas = this.container.getElementsByTagName('canvas')[0];
 		this.container.style.height = '100%';
 		this.container.style.width = '100%';
+		await this.videoExporter.loadFFmpeg();
 	}
 
 	startExport() {

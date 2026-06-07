@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import type p5 from 'p5';
-	import type { Engine } from './engine.svelte.ts';
+	import type { Engine } from './code/engine.svelte.ts';
 
 	interface SketchProps {
 		userSketch: (p: p5) => void;

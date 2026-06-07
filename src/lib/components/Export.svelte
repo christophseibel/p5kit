@@ -4,13 +4,11 @@
 	import Accordion from './Accordion.svelte';
 	import Button from './Button.svelte';
 	import { DownloadIcon } from 'phosphor-svelte';
-	import { loadFFmpeg } from './code/ffmpeg.svelte.ts';
 
 	let engine: Engine | undefined = $state();
 
 	onMount(async () => {
 		engine = getContext<Engine>('p5kit-engine');
-		loadFFmpeg();
 	});
 
 	interface SketchProps {
