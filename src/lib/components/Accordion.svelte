@@ -57,6 +57,9 @@
 
 	#content {
 		padding: 0 var(--ui-spacing) var(--ui-spacing);
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-spacing);
 	}
 
 	:global([data-accordion-content][data-state='open']) {

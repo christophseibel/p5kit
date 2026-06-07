@@ -1,10 +1,19 @@
 <script lang="ts">
-	import { P5, P5Kit, ResolutionSelect, Export, ColorPicker, Accordion } from '$lib/index.js';
+	import {
+		P5,
+		P5Kit,
+		ResolutionSelect,
+		Export,
+		ColorPicker,
+		Accordion,
+		Slider
+	} from '$lib/index.js';
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 
 	let resetFrame = $state(() => {});
 	let hex = $state('#000000');
+	let circleSize: [number, number] = $state([20, 100]);
 
 	const sketch: Sketch = (p5: p5) => {
 		p5.setup = async () => {
@@ -17,7 +26,9 @@
 		p5.draw = () => {
 			p5.background(255);
 			p5.fill(hex);
-			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 150, 100);
+			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 150, circleSize[1]);
+			p5.fill(255);
+			p5.ellipse(p5.width / 2, p5.height / 2 + p5.sin(p5.frameCount * 5) * 150, circleSize[0]);
 		};
 
 		resetFrame = () => {
@@ -35,7 +46,10 @@
 		<div id="controls">
 			<ResolutionSelect></ResolutionSelect>
 			<Export onExport={resetFrame} />
-			<Accordion title="Color"><ColorPicker bind:hex></ColorPicker></Accordion>
+			<Accordion title="Color"
+				><ColorPicker bind:hex></ColorPicker>
+				<Slider type="range" bind:value={circleSize} min={10} max={200} />
+			</Accordion>
 		</div>
 		<div id="sketch"><P5 userSketch={sketch} /></div>
 	</div>
