@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import type { Engine } from './code/engine.svelte.ts';
+	import { type Engine, ExportStatus } from './code/engine.svelte.ts';
 	import Accordion from './Accordion.svelte';
 	import Button from './Button.svelte';
 	import Input from './Input.svelte';
@@ -37,7 +37,7 @@
 	let defaultVideoFormats = [
 		{ label: 'MP4', value: 'MP4' },
 		{ label: 'WEBM', value: 'WEBM' },
-		{ label: 'Frame sequence (EXR)', value: 'Frame sequence (EXR)' }
+		{ label: 'Frame sequence (PNG)', value: 'Frame sequence (PNG)' }
 	];
 
 	let imageFormat = $state(defaultImageFormats[0].value);
@@ -70,26 +70,26 @@
 	<Separator orientation="horizontal" />
 	<div class="label">
 		<span>Video</span>
-		{#if engine?.isRecording || engine?.isExporting}
-			<Button
-				abort
-				onclick={() => {
-					engine?.abortExport();
-				}}
-			>
-				<VideoCameraSlashIcon size={14} />
-				<span>Stop</span>
-			</Button>
-		{:else}
+		{#if engine?.exportStatus == ExportStatus.Finished}
 			<Button
 				onclick={() => {
 					onExport();
-					console.log(videoFormat);
 					engine?.startExport(videoFormat);
 				}}
 			>
 				<VideoCameraIcon size={14} />
 				<span>Record</span>
+			</Button>
+		{:else}
+			<Button
+				abort
+				disabled={engine?.exportStatus == ExportStatus.Loading}
+				onclick={() => {
+					engine?.abortExport();
+				}}
+			>
+				<VideoCameraSlashIcon size={14} />
+				<span>{engine?.exportStatus == ExportStatus.Loading ? 'Loading' : 'Stop'}</span>
 			</Button>
 		{/if}
 	</div>
@@ -108,14 +108,13 @@
 			value={10}
 			onChange={(value) => {
 				engine?.updateFrameCount(value);
-				console.log(engine?.animationFrameCount);
 			}}
 		/>
 	</div>
-	{#if engine?.isRecording}
+	{#if engine?.exportStatus == ExportStatus.Recording}
 		<Progress label="Recording" value={engine?.exportProgress} />
 	{/if}
-	{#if engine?.isExporting}
+	{#if engine?.exportStatus == ExportStatus.Exporting}
 		<Progress label="Exporting" value={engine?.videoExporter?.exportProgress} />
 	{/if}
 </Accordion>

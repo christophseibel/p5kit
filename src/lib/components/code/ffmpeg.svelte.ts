@@ -48,7 +48,7 @@ const WEBM_TRANSPARENT: VideoFormatSettings = {
 };
 
 const FRAME_SEQUENCE: VideoFormatSettings = {
-	guiName: 'Frame sequence (EXR)',
+	guiName: 'Frame sequence (PNG)',
 	ext: 'zip',
 	mimeType: 'application/zip',
 	command: ''
@@ -62,6 +62,9 @@ export class VideoExporter {
 	static FRAMES_DIR = '/frames';
 	frameID = 0;
 	videoExportSettings = videoExportSettings[0];
+
+	private exportDoneResolve: (() => void) | null = null;
+	exportDone: Promise<void> = Promise.resolve();
 
 	set videoFormat(name: string) {
 		console.log(name);
@@ -81,13 +84,15 @@ export class VideoExporter {
 
 			this.exportProgress = mapRange(progress, 0, 1, 0, 100);
 		});
-		console.log(this.ffmpeg);
-
 		await this.ffmpeg.createDir(VideoExporter.FRAMES_DIR);
 	}
 
+	async prepareExport() {
+		await this.exportDone;
+	}
+
 	saveToFFmpeg(canvas: HTMLCanvasElement) {
-		let dataURL = canvas.toDataURL('image/exr');
+		let dataURL = canvas.toDataURL('image/png');
 		let pngData = convertDataURLToBinary(dataURL);
 
 		const currentFrameId = this.frameID;
@@ -95,8 +100,7 @@ export class VideoExporter {
 
 		this.frameWriteQueue = this.frameWriteQueue
 			.then(() => {
-				console.log('saving frame!');
-				this.ffmpegSaveFrame(currentFrameId, pngData);
+				return this.ffmpegSaveFrame(currentFrameId, pngData);
 			})
 			.catch((error) => {
 				console.error(`Failed to save frame ${currentFrameId}.`, error);
@@ -105,7 +109,7 @@ export class VideoExporter {
 	}
 
 	async ffmpegSaveFrame(frameId: number, pngData: Uint8Array) {
-		let fileName = frameId.toString().padStart(6, '0') + '.exr';
+		let fileName = frameId.toString().padStart(6, '0') + '.png';
 		let filePath = `${VideoExporter.FRAMES_DIR}/${fileName}`;
 		await this.ffmpeg.writeFile(filePath, pngData);
 	}
@@ -131,9 +135,14 @@ export class VideoExporter {
 	}
 
 	async ffmpegCreateVideo(width: number, height: number, fps: number, finalCallback?: () => void) {
-		await this.frameWriteQueue;
+		this.abortController = new AbortController();
+		this.exportDone = new Promise((resolve) => {
+			console.log('promise created!');
+			this.exportDoneResolve = resolve;
+		});
 		this.exportProgress = 0;
 		this.frameID = 0;
+		await this.frameWriteQueue;
 		console.log('Exporting video...');
 
 		let fileName = 'video';
@@ -192,14 +201,15 @@ export class VideoExporter {
 			console.error('Video export failed.', error);
 			throw error;
 		} finally {
-			this.frameID = 0;
-
+			console.log(this.frameID, this.exportProgress);
 			try {
 				await this.clearFramesDirectory();
 			} catch (cleanupError) {
 				console.warn('Failed to clear /frames after export.', cleanupError);
 			}
 
+			this.exportDoneResolve?.();
+			this.exportDoneResolve = null;
 			finalCallback?.();
 		}
 	}
@@ -208,7 +218,6 @@ export class VideoExporter {
 		this.abortController.abort();
 		this.exportProgress = 0;
 		this.frameID = 0;
-		this.abortController = new AbortController();
 	}
 
 	downloadBlob(blob: Blob, filename: string) {

@@ -1,5 +1,15 @@
 import type p5 from 'p5';
 import { VideoExporter } from './ffmpeg.svelte.ts';
+import { Export } from 'phosphor-svelte';
+
+export const ExportStatus = {
+	Loading: 0,
+	Recording: 1,
+	Exporting: 2,
+	Finished: 3
+} as const;
+
+type ExportStatus = (typeof ExportStatus)[keyof typeof ExportStatus];
 
 class Engine {
 	instance = $state<p5 | undefined>(undefined);
@@ -9,6 +19,8 @@ class Engine {
 
 	isRecording = $state(false);
 	isExporting = $state(false);
+
+	exportStatus: ExportStatus = $state(ExportStatus.Loading);
 	animationFrameCount = -1;
 	exportProgress = $state(0);
 
@@ -29,7 +41,7 @@ class Engine {
 
 			instance.draw = () => {
 				userDraw?.();
-				if (this.isRecording && this.canvas && this.videoExporter) {
+				if (this.exportStatus == ExportStatus.Recording && this.canvas && this.videoExporter) {
 					if (this.videoExporter.frameID < this.animationFrameCount) {
 						this.videoExporter?.saveToFFmpeg(this.canvas);
 						this.exportProgress = instance.map(
@@ -102,7 +114,9 @@ class Engine {
 		this.container.style.width = '100%';
 
 		this.videoExporter = new VideoExporter();
-		await this.videoExporter.loadFFmpeg();
+		await this.videoExporter?.loadFFmpeg().then(() => {
+			this.exportStatus = ExportStatus.Finished;
+		});
 		this.updateFrameCount(10);
 	}
 
@@ -111,21 +125,27 @@ class Engine {
 			this.animationFrameCount = Math.round(duration * this.instance.getTargetFrameRate());
 	}
 
-	startExport(videoFormat: string) {
-		this.isRecording = true;
+	async startExport(videoFormat: string) {
+		this.exportStatus = ExportStatus.Loading;
 		if (this.videoExporter) this.videoExporter.videoFormat = videoFormat;
+		await this.videoExporter?.prepareExport().then(() => {
+			// this.isRecording = true;
+			this.exportStatus = ExportStatus.Recording;
+		});
 	}
 
 	stopExport() {
-		this.isRecording = false;
-		this.isExporting = true;
+		// this.isRecording = false;
+		// this.isExporting = true;
+		this.exportStatus = ExportStatus.Exporting;
 		if (this.instance) {
 			this.videoExporter?.ffmpegCreateVideo(
 				this.instance.width,
 				this.instance.height,
 				this.instance.getTargetFrameRate(),
 				() => {
-					this.isExporting = false;
+					// this.isExporting = false;
+					this.exportStatus = ExportStatus.Finished;
 				}
 			);
 		}
@@ -134,6 +154,7 @@ class Engine {
 	abortExport() {
 		this.isRecording = false;
 		this.isExporting = false;
+		this.exportStatus = ExportStatus.Finished;
 		this.videoExporter?.abortExport();
 	}
 }
