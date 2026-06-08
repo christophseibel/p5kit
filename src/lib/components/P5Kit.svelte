@@ -2,7 +2,7 @@
 	import { onMount, setContext } from 'svelte';
 	import { createEngine, type Engine } from './code/engine.svelte.ts';
 	import type { Snippet } from 'svelte';
-	import '$lib/style.css';
+	import '../style.css';
 
 	const engine = createEngine();
 
