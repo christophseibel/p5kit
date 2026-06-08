@@ -35,7 +35,7 @@ const MP4: VideoFormatSettings = {
 	mimeType: 'video/mp4',
 	crf: 21,
 	command:
-		'-y -nostdin -framerate FFMPEG_FPS -i /frames/%06d.png -c:v libx264 -threads 1 -pix_fmt yuv420p -crf FFMPEG_CRF -vf scale=FFMPEG_WIDTH:FFMPEG_HEIGHT:flags=lanczos -movflags +faststart FFMPEG_OUTPUTFILE'
+		'-y -nostdin -framerate FFMPEG_FPS -i /frames/%06d.png -c:v libx264 -threads 0 -pix_fmt yuv420p -crf FFMPEG_CRF -vf scale=FFMPEG_WIDTH:FFMPEG_HEIGHT:flags=lanczos -movflags +faststart FFMPEG_OUTPUTFILE'
 };
 
 const WEBM_TRANSPARENT: VideoFormatSettings = {
@@ -44,7 +44,7 @@ const WEBM_TRANSPARENT: VideoFormatSettings = {
 	mimeType: 'video/webm',
 	crf: 36,
 	command:
-		'-y -nostdin -framerate FFMPEG_FPS -i /frames/%06d.png -c:v libvpx-vp9 -threads 1 -pix_fmt yuva420p -lossless 1 -vf scale=FFMPEG_WIDTH:FFMPEG_HEIGHT:flags=lanczos FFMPEG_OUTPUTFILE'
+		'-y -nostdin -framerate FFMPEG_FPS -i /frames/%06d.png -c:v libvpx-vp9 -threads 0 -pix_fmt yuva420p -lossless 1 -vf scale=FFMPEG_WIDTH:FFMPEG_HEIGHT:flags=lanczos FFMPEG_OUTPUTFILE'
 };
 
 const FRAME_SEQUENCE: VideoFormatSettings = {
@@ -156,7 +156,7 @@ export class VideoExporter {
 
 				for (const item of frames) {
 					if (this.abortController.signal.aborted) return;
-					if (!item.isDir && item.name.endsWith('.exr')) {
+					if (!item.isDir && item.name.endsWith('.png')) {
 						const filePath = `${VideoExporter.FRAMES_DIR}/${item.name}`;
 						const data = await this.ffmpeg.readFile(filePath);
 						zip.file(item.name, data as Uint8Array);
