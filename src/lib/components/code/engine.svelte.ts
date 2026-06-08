@@ -1,6 +1,5 @@
 import type p5 from 'p5';
 import { VideoExporter } from './ffmpeg.svelte.ts';
-import { Export } from 'phosphor-svelte';
 
 export const ExportStatus = {
 	Loading: 0,
@@ -16,9 +15,6 @@ class Engine {
 	container = $state<HTMLDivElement | undefined>(undefined);
 	canvas = $state<HTMLCanvasElement | undefined>(undefined);
 	videoExporter = $state<VideoExporter | undefined>(undefined);
-
-	isRecording = $state(false);
-	isExporting = $state(false);
 
 	exportStatus: ExportStatus = $state(ExportStatus.Loading);
 	animationFrameCount = -1;
@@ -135,8 +131,6 @@ class Engine {
 	}
 
 	stopExport() {
-		// this.isRecording = false;
-		// this.isExporting = true;
 		this.exportStatus = ExportStatus.Exporting;
 		if (this.instance) {
 			this.videoExporter?.ffmpegCreateVideo(
@@ -152,8 +146,6 @@ class Engine {
 	}
 
 	abortExport() {
-		this.isRecording = false;
-		this.isExporting = false;
 		this.exportStatus = ExportStatus.Finished;
 		this.videoExporter?.abortExport();
 	}

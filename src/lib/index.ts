@@ -17,5 +17,13 @@ declare global {
 
 type Sketch = (sketch: p5) => void;
 
-export type { Sketch };
+interface VideoFormatSettings {
+	guiName: string;
+	ext: string;
+	mimeType: string;
+	crf?: number;
+	command: string;
+}
+
+export type { Sketch, VideoFormatSettings };
 export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider };

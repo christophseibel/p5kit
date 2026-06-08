@@ -1,4 +1,5 @@
 import { FFmpeg, type FSNode } from '@ffmpeg/ffmpeg';
+import type { VideoFormatSettings } from '$lib/index.js';
 import JSZip from 'jszip';
 
 function convertDataURLToBinary(dataURL: string) {
@@ -20,14 +21,6 @@ const onFFmpegLog = ({ message }: { message: string }) => {
 const onFFmpegProgress = ({ progress, time }: { progress: number; time: number }) => {
 	console.log(progress, time);
 };
-
-interface VideoFormatSettings {
-	guiName: string;
-	ext: string;
-	mimeType: string;
-	crf?: number; // inverse quality (constant rate factor)
-	command: string;
-}
 
 const MP4: VideoFormatSettings = {
 	guiName: 'MP4',
