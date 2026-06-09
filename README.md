@@ -14,6 +14,4 @@ p5.kit is heavily in development, its (planned) features are:
 - Export of videos and images ✅
 - Big toolkit of components: Dropdown, Slider, Colorpicker, Toggle, File-Uploader.... ❌
 - Theming: easily style existing components ❌
-- Undo/Redo-system: revert changes to components ❌
-- Randomizer: randomize the values of components ❌
 - Custom Components: API for creating components that integrate into p5.kit ❌
