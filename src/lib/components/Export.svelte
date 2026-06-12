@@ -68,7 +68,7 @@
 		</Select>
 	</div>
 	<Separator orientation="horizontal" />
-	<div class="label">
+	<!-- <div class="label">
 		<span>Video</span>
 		{#if engine?.exportStatus == ExportStatus.Finished}
 			<Button
@@ -116,7 +116,7 @@
 	{/if}
 	{#if engine?.exportStatus == ExportStatus.Exporting}
 		<Progress label="Exporting" value={engine?.videoExporter?.exportProgress} />
-	{/if}
+	{/if} -->
 </Accordion>
 
 <style>
