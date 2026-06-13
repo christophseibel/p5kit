@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
-	import { type Engine, ExportStatus } from './code/engine.svelte.ts';
+	import { type Engine } from './code/engine.svelte.ts';
 	import Accordion from './Accordion.svelte';
 	import Button from './Button.svelte';
 	import Input from './Input.svelte';
@@ -42,9 +42,19 @@
 
 	let imageFormat = $state(defaultImageFormats[0].value);
 	let videoFormat = $state(defaultVideoFormats[0].value);
+
+	let videoDuration = $state(10);
 </script>
 
 <Accordion title="Export">
+	<div class="label">
+		<span>Format</span>
+		<Select items={defaultImageFormats} type="single" bind:value={imageFormat}>
+			{#snippet icon()}
+				<FileImageIcon size={14} />
+			{/snippet}
+		</Select>
+	</div>
 	<div class="label">
 		<span>Image</span>
 		<Button
@@ -56,43 +66,12 @@
 			}}
 		>
 			<DownloadIcon size={14} />
-			<span>Export Image</span>
+			<span>Download</span>
 		</Button>
 	</div>
-	<div class="label">
-		<span>Format</span>
-		<Select items={defaultImageFormats} type="single" bind:value={imageFormat}>
-			{#snippet icon()}
-				<FileImageIcon size={14} />
-			{/snippet}
-		</Select>
-	</div>
+
 	<Separator orientation="horizontal" />
-	<!-- <div class="label">
-		<span>Video</span>
-		{#if engine?.exportStatus == ExportStatus.Finished}
-			<Button
-				onclick={() => {
-					onExport();
-					engine?.startExport(videoFormat);
-				}}
-			>
-				<VideoCameraIcon size={14} />
-				<span>Record</span>
-			</Button>
-		{:else}
-			<Button
-				abort
-				disabled={engine?.exportStatus == ExportStatus.Loading}
-				onclick={() => {
-					engine?.abortExport();
-				}}
-			>
-				<VideoCameraSlashIcon size={14} />
-				<span>{engine?.exportStatus == ExportStatus.Loading ? 'Loading' : 'Stop'}</span>
-			</Button>
-		{/if}
-	</div>
+
 	<div class="label">
 		<span>Format</span>
 		<Select items={defaultVideoFormats} type="single" bind:value={videoFormat}>
@@ -103,20 +82,35 @@
 	</div>
 	<div class="label">
 		<span>Duration (s)</span>
-		<Input
-			type="number"
-			value={10}
-			onChange={(value) => {
-				engine?.updateFrameCount(value);
-			}}
-		/>
+		<Input type="number" bind:value={videoDuration} />
 	</div>
-	{#if engine?.exportStatus == ExportStatus.Recording}
-		<Progress label="Recording" value={engine?.exportProgress} />
+	<div class="label">
+		<span>Video</span>
+		{#if engine?.isExporting}
+			<Button
+				abort
+				onclick={() => {
+					engine?.cancelVideoExport();
+				}}
+			>
+				<VideoCameraSlashIcon size={14} />
+				<span>Stop</span>
+			</Button>
+		{:else}
+			<Button
+				onclick={() => {
+					engine?.exportVideo(videoDuration);
+					onExport();
+				}}
+			>
+				<VideoCameraIcon size={14} />
+				<span>Record</span>
+			</Button>
+		{/if}
+	</div>
+	{#if engine?.isExporting}
+		<Progress label="Exporting" value={engine?.exportProgress} />
 	{/if}
-	{#if engine?.exportStatus == ExportStatus.Exporting}
-		<Progress label="Exporting" value={engine?.videoExporter?.exportProgress} />
-	{/if} -->
 </Accordion>
 
 <style>

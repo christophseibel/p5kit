@@ -1,22 +1,19 @@
 import type p5 from 'p5';
-
-export const ExportStatus = {
-	Loading: 0,
-	Recording: 1,
-	Exporting: 2,
-	Finished: 3
-} as const;
-
-type ExportStatus = (typeof ExportStatus)[keyof typeof ExportStatus];
+import { Output, CanvasSource, QUALITY_MEDIUM, Mp4OutputFormat, BufferTarget } from 'mediabunny';
 
 class Engine {
 	instance = $state<p5 | undefined>(undefined);
 	container = $state<HTMLDivElement | undefined>(undefined);
 	canvas = $state<HTMLCanvasElement | undefined>(undefined);
 
-	exportStatus: ExportStatus = $state(ExportStatus.Loading);
+	isExporting = $state(false);
 	animationFrameCount = -1;
 	exportProgress = $state(0);
+
+	output = new Output({
+		format: new Mp4OutputFormat(),
+		target: new BufferTarget()
+	});
 
 	wrap = (sketch: (p: p5) => void) => {
 		return (instance: p5) => {
@@ -44,7 +41,7 @@ class Engine {
 		};
 	};
 
-	containCanvas = () => {
+	containCanvas() {
 		if (this.instance && this.canvas && this.container) {
 			const canvAsp = this.instance.width / this.instance.height;
 			const wrapperW = this.container.clientWidth;
@@ -70,9 +67,9 @@ class Engine {
 				this.canvas.style.maxHeight = `${wrapperH}px`;
 			}
 		}
-	};
+	}
 
-	resizeCanvas = (width: number, height: number) => {
+	resizeCanvas(width: number, height: number) {
 		if (width < 1 || height < 1) return;
 
 		this.instance?.pixelDensity(1);
@@ -80,11 +77,71 @@ class Engine {
 
 		this.containCanvas();
 		this.containCanvas();
-	};
+	}
 
-	exportImage = (format: string) => {
+	exportImage(format: string) {
 		this.instance?.saveCanvas('untitled', format);
-	};
+	}
+
+	async exportVideo(duration: number) {
+		if (!this.instance || !this.canvas) return;
+
+		try {
+			this.instance.noLoop();
+			const frameRate = this.instance.getTargetFrameRate();
+			const totalFrames = duration * frameRate;
+
+			const canvasSource = new CanvasSource(this.canvas, {
+				codec: 'avc',
+				bitrate: QUALITY_MEDIUM
+			});
+
+			this.output.addVideoTrack(canvasSource);
+			await this.output.start();
+			this.isExporting = true;
+
+			console.log(`Starting encoding: ${totalFrames} frames at ${frameRate} fps`);
+
+			for (let frameIndex = 0; frameIndex < totalFrames; frameIndex++) {
+				const timestamp = frameIndex / frameRate;
+				await new Promise((resolve) => requestAnimationFrame(resolve));
+				await canvasSource.add(timestamp, 1 / frameRate);
+				this.exportProgress = this.mapRange(frameIndex, 0, totalFrames, 0, 100);
+				this.instance.redraw();
+				console.log(`Encoded frame ${frameIndex}/${totalFrames}`);
+			}
+
+			console.log('All frames encoded, closing video source...');
+			canvasSource.close();
+
+			console.log('Finalizing output...');
+			await this.output.finalize();
+			this.isExporting = false;
+			this.instance.loop();
+
+			console.log('Video finalized, downloading...');
+			const blob = new Blob([this.output.target.buffer!], { type: this.output.format.mimeType });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = 'video.mp4';
+			link.click();
+		} catch (error) {
+			console.error('Error during video export:', error);
+		}
+	}
+
+	async cancelVideoExport() {
+		await this.output.cancel().then(() => {
+			this.isExporting = false;
+			this.exportProgress = 0;
+
+			this.output = new Output({
+				format: new Mp4OutputFormat(),
+				target: new BufferTarget()
+			});
+		});
+	}
 
 	async registerInstance(instance: p5, container: HTMLDivElement) {
 		this.instance = instance;
@@ -92,6 +149,23 @@ class Engine {
 		this.canvas = this.container.getElementsByTagName('canvas')[0];
 		this.container.style.height = '100%';
 		this.container.style.width = '100%';
+	}
+
+	private mapRange(
+		x: number,
+		inMin: number,
+		inMax: number,
+		outMin: number,
+		outMax: number,
+		clamp = true
+	) {
+		if (inMax === inMin) return outMin; // avoid divide-by-zero
+
+		let t = (x - inMin) / (inMax - inMin); // normalize to 0..1 (maybe outside)
+
+		if (clamp) t = Math.min(1, Math.max(0, t));
+
+		return outMin + t * (outMax - outMin);
 	}
 }
 
