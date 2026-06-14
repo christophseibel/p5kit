@@ -1,5 +1,5 @@
 {
-	"name": "p5kit",
+	"name": "p5.kit",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite dev",
