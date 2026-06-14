@@ -1,4 +1,4 @@
-![p5.kit](./src/lib/assets/p5.kit-logo.svg)
+![p5.kit](https://github.com/christophseibel/p5kit/blob/main/src/lib/assets/p5.kit-logo.svg)
 <p align="center">
 	<a style="text-decoration:none !important;" href="./LICENSE"><img alt="p5.kit license" src="https://img.shields.io/badge/License-MIT-green.svg"></a>
 </p>
