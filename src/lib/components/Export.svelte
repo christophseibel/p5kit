@@ -36,8 +36,7 @@
 
 	let defaultVideoFormats = [
 		{ label: 'MP4', value: 'MP4' },
-		{ label: 'WEBM', value: 'WEBM' },
-		{ label: 'Frame sequence (PNG)', value: 'Frame sequence (PNG)' }
+		{ label: 'WEBM', value: 'WEBM' }
 	];
 
 	let imageFormat = $state(defaultImageFormats[0].value);
@@ -99,7 +98,7 @@
 		{:else}
 			<Button
 				onclick={() => {
-					engine?.exportVideo(videoDuration);
+					engine?.exportVideo(videoDuration, videoFormat);
 					onExport();
 				}}
 			>

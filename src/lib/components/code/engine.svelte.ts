@@ -1,5 +1,20 @@
 import type p5 from 'p5';
-import { Output, CanvasSource, QUALITY_MEDIUM, Mp4OutputFormat, BufferTarget } from 'mediabunny';
+import {
+	Output,
+	CanvasSource,
+	QUALITY_MEDIUM,
+	Mp4OutputFormat,
+	WebMOutputFormat,
+	BufferTarget
+} from 'mediabunny';
+import type { OutputFormat, VideoCodec } from 'mediabunny';
+
+type videoFormat = { name: string; format: OutputFormat; codec: VideoCodec };
+
+const videoFormats: videoFormat[] = [
+	{ name: 'MP4', format: new Mp4OutputFormat(), codec: 'avc' },
+	{ name: 'WEBM', format: new WebMOutputFormat(), codec: 'vp9' }
+];
 
 class Engine {
 	instance = $state<p5 | undefined>(undefined);
@@ -83,7 +98,7 @@ class Engine {
 		this.instance?.saveCanvas('untitled', format);
 	}
 
-	async exportVideo(duration: number) {
+	async exportVideo(duration: number, formatName: string) {
 		if (!this.instance || !this.canvas) return;
 
 		try {
@@ -91,8 +106,23 @@ class Engine {
 			const frameRate = this.instance.getTargetFrameRate();
 			const totalFrames = duration * frameRate;
 
+			const outputFormat = videoFormats.find((format) => format.name == formatName);
+			console.log(outputFormat?.format.mimeType);
+			if (outputFormat) {
+				this.output = new Output({
+					format: outputFormat.format,
+					target: new BufferTarget()
+				});
+			} else {
+				console.warn(`No matching format found for "${formatName}", falling back to MP4`);
+				this.output = new Output({
+					format: new Mp4OutputFormat(),
+					target: new BufferTarget()
+				});
+			}
+
 			const canvasSource = new CanvasSource(this.canvas, {
-				codec: 'avc',
+				codec: outputFormat?.codec || 'av1',
 				bitrate: QUALITY_MEDIUM
 			});
 
@@ -120,14 +150,14 @@ class Engine {
 			this.instance.loop();
 
 			console.log('Video finalized, downloading...');
+			console.log(this.output.format.mimeType.split('/'));
 			const blob = new Blob([this.output.target.buffer!], { type: this.output.format.mimeType });
-			const url = URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = 'video.mp4';
-			link.click();
+			const fileName = 'video.' + this.output.format.mimeType.split('/')[1];
+			this.downloadBlob(blob, fileName);
 		} catch (error) {
 			console.error('Error during video export:', error);
+			this.isExporting = false;
+			this.exportProgress = 0;
 		}
 	}
 
@@ -140,6 +170,8 @@ class Engine {
 				format: new Mp4OutputFormat(),
 				target: new BufferTarget()
 			});
+
+			this.instance?.loop();
 		});
 	}
 
@@ -166,6 +198,20 @@ class Engine {
 		if (clamp) t = Math.min(1, Math.max(0, t));
 
 		return outMin + t * (outMax - outMin);
+	}
+
+	private downloadBlob(blob: Blob, filename: string) {
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.download = filename;
+		link.style.display = 'none';
+		document.body.appendChild(link);
+		link.click();
+		window.setTimeout(() => {
+			link.remove();
+			URL.revokeObjectURL(url);
+		}, 1000);
 	}
 }
 
