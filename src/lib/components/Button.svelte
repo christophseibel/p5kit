@@ -13,7 +13,7 @@
 
 <style>
 	:global([data-button-root]) {
-		background-color: light-dark(var(--gray-400), var(--gray-600));
+		background-color: light-dark(var(--gray-300), var(--gray-600));
 		border: unset;
 		font-size: var(--ui-text);
 		padding: var(--ui-padding);
@@ -26,7 +26,7 @@
 		width: 100%;
 
 		& > svg {
-			color: var(--gray-300);
+			color: light-dark(var(--gray-300), var(--gray-50));
 		}
 	}
 

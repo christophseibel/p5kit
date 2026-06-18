@@ -22,10 +22,10 @@
 
 <style>
 	input {
-		background-color: var(--gray-700);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
 		border-radius: var(--ui-border);
 		border: unset;
-		color: white;
+		color: light-dark(var(--gray-950), var(--gray-50));
 		font-size: var(--ui-text);
 		padding: var(--ui-padding);
 		width: 100%;

@@ -58,10 +58,11 @@
 	}
 
 	input {
-		background-color: var(--gray-700);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
+		box-sizing: content-box;
 		border-radius: var(--ui-border);
 		border: unset;
-		color: white;
+		color: light-dark(var(--gray-950), var(--gray-50));
 		font-size: var(--ui-text);
 		width: 100%;
 	}

@@ -19,11 +19,6 @@
 	let { value = $bindable(), type, ...restProps }: wholeProps = $props();
 </script>
 
-<!--
- Since we have to destructure the `value` to make it `$bindable`, we need to use `as any` here to avoid
- type errors from the discriminated union of `"single" | "multiple"`.
- (an unfortunate consequence of having to destructure bindable values)
-  -->
 <Slider.Root bind:value type={type == 'single' ? 'single' : 'multiple'} {...restProps as any}>
 	{#snippet children({ thumbItems, tickItems })}
 		<Slider.Range />
@@ -57,12 +52,12 @@
 	:global([data-slider-range]) {
 		position: absolute;
 		height: 100%;
-		background-color: var(--gray-400);
+		background-color: light-dark(var(--gray-400), var(--gray-400));
 	}
 
 	:global([data-slider-thumb]) {
 		position: absolute;
-		background-color: var(--gray-900);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
 		border: var(--gray-400) solid 2px;
 		width: 8px;
 		height: 8px;

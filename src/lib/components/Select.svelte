@@ -49,10 +49,10 @@
 
 <style>
 	:global([data-select-trigger]) {
-		background-color: var(--gray-700);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
 		border: unset;
 		border-radius: var(--ui-border);
-		color: var(--gray-50);
+		color: light-dark(var(--gray-950), var(--gray-50));
 		padding: unset;
 		font-size: var(--ui-text);
 		width: 100%;
@@ -66,7 +66,7 @@
 		align-items: center;
 
 		& > #icon > svg {
-			color: var(--gray-500);
+			color: light-dark(var(--gray-950), var(--gray-50));
 		}
 	}
 
@@ -81,10 +81,10 @@
 	}
 
 	:global([data-select-viewport]) {
-		background-color: var(--gray-700);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
 		border-radius: var(--ui-border);
 		border: unset;
-		color: var(--gray-50);
+		color: light-dark(var(--gray-950), var(--gray-50));
 		display: flex;
 		flex-direction: column;
 		font-size: var(--ui-text);
@@ -97,7 +97,7 @@
 	}
 
 	:global([data-select-item][data-highlighted]) {
-		background-color: var(--gray-600);
+		background-color: light-dark(var(--gray-400), var(--gray-700));
 		border-radius: var(--ui-border);
 	}
 </style>

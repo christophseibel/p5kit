@@ -43,30 +43,24 @@
 		padding: var(--ui-spacing) calc(1.5 * var(--ui-spacing)) var(--ui-spacing) var(--ui-spacing);
 		font-size: var(--ui-text);
 		color: light-dark(var(--gray-950), var(--gray-50));
-
-		& > span > svg {
-			transition: transform 0.2s ease;
-		}
 	}
 
-	:global([data-accordion-trigger][data-state='open']) {
-		& > span > svg {
-			transform: rotate(180deg);
-		}
+	:global([data-accordion-content]) {
+		overflow: hidden;
 	}
 
-	#content {
-		padding: 0 var(--ui-spacing) var(--ui-spacing);
-		display: flex;
-		flex-direction: column;
-		gap: var(--ui-spacing);
+	:global([data-accordion-content][data-state='open']) #content {
+		animation: panel-in 160ms ease-out forwards;
+	}
+
+	:global([data-accordion-content][data-state='closed']) #content {
+		animation: panel-out 120ms ease-in forwards;
 	}
 
 	:global([data-accordion-content][data-state='open']) {
 		animation: accordion-down 0.1s ease-out;
 	}
 
-	/* Trigger 'up' animation when state is closed */
 	:global([data-accordion-content][data-state='closed']) {
 		animation: accordion-up 0.1s ease-in;
 	}
@@ -89,12 +83,32 @@
 		}
 	}
 
-	@keyframes caret-open {
+	@keyframes panel-in {
 		from {
-			transform: rotate(0deg);
+			transform: translateY(-4px) scaleY(0.98);
+			opacity: 0;
 		}
 		to {
-			transform: rotate(90deg);
+			transform: translateY(0) scaleY(1);
+			opacity: 1;
 		}
+	}
+
+	@keyframes panel-out {
+		from {
+			transform: translateY(0) scaleY(1);
+			opacity: 1;
+		}
+		to {
+			transform: translateY(-4px) scaleY(0.98);
+			opacity: 0;
+		}
+	}
+
+	#content {
+		padding: 0 var(--ui-spacing) var(--ui-spacing);
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-spacing);
 	}
 </style>
