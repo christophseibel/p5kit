@@ -94,11 +94,11 @@ class Engine {
 		this.containCanvas();
 	}
 
-	exportImage(format: string) {
-		this.instance?.saveCanvas('untitled', format);
+	exportImage(title: string, format: string) {
+		this.instance?.saveCanvas(title, format);
 	}
 
-	async exportVideo(duration: number, formatName: string) {
+	async exportVideo(title: string, duration: number, formatName: string) {
 		if (!this.instance || !this.canvas) return;
 
 		try {
@@ -152,7 +152,7 @@ class Engine {
 			console.log('Video finalized, downloading...');
 			console.log(this.output.format.mimeType.split('/'));
 			const blob = new Blob([this.output.target.buffer!], { type: this.output.format.mimeType });
-			const fileName = 'video.' + this.output.format.mimeType.split('/')[1];
+			const fileName = title + '.' + this.output.format.mimeType.split('/')[1];
 			this.downloadBlob(blob, fileName);
 		} catch (error) {
 			console.error('Error during video export:', error);

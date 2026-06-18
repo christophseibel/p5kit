@@ -43,9 +43,16 @@
 	let videoFormat = $state(defaultVideoFormats[0].value);
 
 	let videoDuration = $state(10);
+	let fileTitle = $state('p5kit');
 </script>
 
 <Accordion title="Export">
+	<div class="label">
+		<span>Title</span>
+		<Input type="text" bind:value={fileTitle} />
+	</div>
+	<Separator orientation="horizontal" />
+
 	<div class="label">
 		<span>Format</span>
 		<Select items={defaultImageFormats} type="single" bind:value={imageFormat}>
@@ -60,7 +67,7 @@
 			onclick={() => {
 				onExport();
 				requestAnimationFrame(() => {
-					engine?.exportImage(imageFormat);
+					engine?.exportImage(fileTitle, imageFormat);
 				});
 			}}
 		>
@@ -98,7 +105,7 @@
 		{:else}
 			<Button
 				onclick={() => {
-					engine?.exportVideo(videoDuration, videoFormat);
+					engine?.exportVideo(fileTitle, videoDuration, videoFormat);
 					onExport();
 				}}
 			>

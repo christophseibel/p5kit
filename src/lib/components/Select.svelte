@@ -97,7 +97,7 @@
 	}
 
 	:global([data-select-item][data-highlighted]) {
-		background-color: light-dark(var(--gray-400), var(--gray-700));
+		background-color: light-dark(var(--gray-400), var(--gray-600));
 		border-radius: var(--ui-border);
 	}
 </style>

@@ -45,10 +45,6 @@
 		color: light-dark(var(--gray-950), var(--gray-50));
 	}
 
-	:global([data-accordion-content]) {
-		overflow: hidden;
-	}
-
 	:global([data-accordion-content][data-state='open']) #content {
 		animation: panel-in 160ms ease-out forwards;
 	}
