@@ -39,7 +39,7 @@
 
 <style>
 	:global([data-slider-root]) {
-		background-color: var(--gray-700);
+		background-color: light-dark(var(--gray-300), var(--gray-700));
 		height: 3px;
 		position: relative;
 		display: flex;

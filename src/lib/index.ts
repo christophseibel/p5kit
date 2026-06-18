@@ -8,6 +8,7 @@ import Export from './components/Export.svelte';
 import Accordion from './components/Accordion.svelte';
 import ColorPicker from './components/ColorPicker.svelte';
 import Slider from './components/Slider.svelte';
+import Toggle from './components/Toggle.svelte';
 
 declare global {
 	interface Window {
@@ -26,4 +27,4 @@ interface VideoFormatSettings {
 }
 
 export type { Sketch, VideoFormatSettings };
-export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider };
+export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider, Toggle };
