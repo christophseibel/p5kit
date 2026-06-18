@@ -52,13 +52,13 @@
 	:global([data-slider-range]) {
 		position: absolute;
 		height: 100%;
-		background-color: light-dark(var(--gray-400), var(--gray-400));
+		background-color: light-dark(var(--gray-400), var(--gray-500));
 	}
 
 	:global([data-slider-thumb]) {
 		position: absolute;
-		background-color: light-dark(var(--gray-300), var(--gray-700));
-		border: var(--gray-400) solid 2px;
+		background-color: light-dark(var(--gray-50), var(--gray-950));
+		border: light-dark(var(--gray-300), var(--gray-500)) solid 2px;
 		width: 8px;
 		height: 8px;
 		border-radius: 100%;
