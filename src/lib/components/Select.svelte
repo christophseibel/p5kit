@@ -49,7 +49,7 @@
 
 <style>
 	:global([data-select-trigger]) {
-		background-color: light-dark(var(--gray-400), var(--gray-700));
+		background-color: light-dark(var(--gray-300), var(--gray-600));
 		border: unset;
 		border-radius: var(--ui-border);
 		color: light-dark(var(--gray-950), var(--gray-50));

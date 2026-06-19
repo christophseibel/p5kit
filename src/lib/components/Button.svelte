@@ -13,7 +13,7 @@
 
 <style>
 	:global([data-button-root]) {
-		background-color: light-dark(var(--gray-300), var(--gray-600));
+		background-color: light-dark(var(--gray-400), var(--gray-700));
 		border: unset;
 		font-size: var(--ui-text);
 		padding: var(--ui-padding);
@@ -31,7 +31,7 @@
 	}
 
 	:global(.abort) {
-		background-color: color-mix(in srgb, light-dark(var(--gray-300), var(--gray-600)), red);
+		background-color: color-mix(in srgb, light-dark(var(--gray-400), var(--gray-600)), red);
 	}
 
 	:global([data-button-root]):active {

@@ -58,9 +58,9 @@
 	:global([data-slider-thumb]) {
 		position: absolute;
 		background-color: light-dark(var(--gray-50), var(--gray-950));
-		border: light-dark(var(--gray-300), var(--gray-500)) solid 2px;
-		width: 8px;
-		height: 8px;
+		border: light-dark(var(--gray-400), var(--gray-500)) solid 2px;
+		width: 10px;
+		height: 10px;
 		border-radius: 100%;
 	}
 </style>

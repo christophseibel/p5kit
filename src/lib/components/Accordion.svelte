@@ -29,7 +29,7 @@
 	}
 
 	:global([data-accordion-item]) {
-		border-bottom: var(--gray-700) solid 1px;
+		border-bottom: light-dark(var(--gray-300), var(--gray-700)) solid 1px;
 	}
 
 	:global([data-accordion-trigger]) {
