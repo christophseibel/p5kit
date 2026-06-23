@@ -54,10 +54,9 @@
 	"description": "p5kit is a component library for sveltekit to build lightweight webtools with p5.js",
 	"license": "MIT",
 	"dependencies": {
-		"@ffmpeg/ffmpeg": "^0.12.15",
 		"@types/node": "^25.9.0",
 		"bits-ui": "^2.18.1",
-		"jszip": "^3.10.1",
+		"mediabunny": "^1.49.0",
 		"phosphor-svelte": "^3.1.0",
 		"svelte-awesome-color-picker": "^4.1.3"
 	}
