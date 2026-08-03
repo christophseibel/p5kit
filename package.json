@@ -32,18 +32,18 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/kit": "^2.57.0",
-		"@sveltejs/package": "^2.5.7",
-		"@sveltejs/vite-plugin-svelte": "^7.0.0",
-		"animejs": "^4.4.1",
-		"p5": "^2.2.3",
-		"prettier": "^3.8.1",
-		"prettier-plugin-svelte": "^3.5.1",
-		"publint": "^0.3.18",
-		"svelte": "^5.55.2",
-		"svelte-check": "^4.4.6",
-		"typescript": "^6.0.2",
-		"vite": "^8.0.7"
+		"@sveltejs/kit": "^2.70.2",
+		"@sveltejs/package": "^2.5.8",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"animejs": "^4.5.0",
+		"p5": "^2.3.2",
+		"prettier": "^3.9.6",
+		"prettier-plugin-svelte": "^3.5.2",
+		"publint": "^0.3.22",
+		"svelte": "^5.56.8",
+		"svelte-check": "^4.7.4",
+		"typescript": "^7.0.2",
+		"vite": "^8.2.0"
 	},
 	"keywords": [
 		"svelte",
@@ -54,9 +54,9 @@
 	"description": "p5kit is a component library for sveltekit to build lightweight webtools with p5.js",
 	"license": "MIT",
 	"dependencies": {
-		"@types/node": "^25.9.0",
+		"@types/node": "^25.9.5",
 		"bits-ui": "^2.18.1",
-		"mediabunny": "^1.49.0",
+		"mediabunny": "^1.52.3",
 		"phosphor-svelte": "^3.1.0",
 		"svelte-awesome-color-picker": "^4.1.3"
 	}

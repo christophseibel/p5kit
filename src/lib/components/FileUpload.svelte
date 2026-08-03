@@ -21,7 +21,7 @@
 
 	const acceptString = {
 		image: 'image/*',
-		json: 'json',
+		json: '.json',
 		font: 'font/*',
 		model: '.obj,.stl',
 		strings: '.txt'

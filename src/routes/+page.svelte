@@ -27,12 +27,6 @@
 
 	let timeline: Timeline;
 
-	let backgroundImage: p5.Image | undefined = $state();
-	$inspect(backgroundImage);
-
-	let inputJSON: { x: number; y: number } | undefined = $state();
-	$inspect(inputJSON);
-
 	const sketch: Sketch = (p5: p5) => {
 		p5.setup = async () => {
 			p5.createCanvas(500, 500);
@@ -44,10 +38,7 @@
 
 		p5.draw = () => {
 			p5.background(255);
-			if (backgroundImage) p5.image(backgroundImage, 0, 0);
-
 			p5.fill(hex);
-			if (inputJSON) p5.circle(inputJSON.x, inputJSON.y, 50);
 			p5.ellipse(position.x, position.y, circleSize[1]);
 			p5.fill(255);
 			if (checked) p5.ellipse(position.x, position.y, circleSize[0]);
@@ -79,7 +70,6 @@
 				<ColorPicker bind:hex />
 				<Slider type="range" bind:value={circleSize} min={0} max={200} />
 				<Toggle bind:checked />
-				<FileUpload bind:file={inputJSON} accepts="json" />
 			</Accordion>
 		</div>
 		<div id="sketch"><P5 userSketch={sketch} /></div>
