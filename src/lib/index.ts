@@ -9,6 +9,7 @@ import Accordion from './components/Accordion.svelte';
 import ColorPicker from './components/ColorPicker.svelte';
 import Slider from './components/Slider.svelte';
 import Toggle from './components/Toggle.svelte';
+import FileUpload from './components/FileUpload.svelte';
 
 declare global {
 	interface Window {
@@ -16,15 +17,8 @@ declare global {
 	}
 }
 
+type FileType = 'image' | 'json' | 'font' | 'model' | 'strings';
 type Sketch = (sketch: p5) => void;
 
-interface VideoFormatSettings {
-	guiName: string;
-	ext: string;
-	mimeType: string;
-	crf?: number;
-	command: string;
-}
-
-export type { Sketch, VideoFormatSettings };
-export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider, Toggle };
+export type { Sketch, FileType };
+export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider, Toggle, FileUpload };
