@@ -47,34 +47,36 @@
 	};
 </script>
 
-<P5Kit>
-	<div id="container">
-		<div id="controls">
-			<ResolutionSelect
-				onResize={(p5) => {
-					position = { x: p5.width / 2, y: p5.height / 2 };
-					timeline = createTimeline({ loop: true, alternate: true }).add(position, {
-						keyframes: [
-							{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 },
-							{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 }
-						]
-					});
-				}}
-			/>
-			<Export
-				onExport={() => {
-					timeline.restart();
-				}}
-			/>
-			<Accordion title="Properties">
-				<ColorPicker bind:hex />
-				<Slider type="range" bind:value={circleSize} min={0} max={200} />
-				<Toggle bind:checked />
-			</Accordion>
+<div id="page">
+	<P5Kit>
+		<div id="container">
+			<div id="controls">
+				<ResolutionSelect
+					onResize={(p5) => {
+						position = { x: p5.width / 2, y: p5.height / 2 };
+						timeline = createTimeline({ loop: true, alternate: true }).add(position, {
+							keyframes: [
+								{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 },
+								{ x: p5.random(p5.width), y: p5.random(p5.height), duration: 1000 }
+							]
+						});
+					}}
+				/>
+				<Export
+					onExport={() => {
+						timeline.restart();
+					}}
+				/>
+				<Accordion title="Properties">
+					<ColorPicker bind:hex />
+					<Slider type="range" bind:value={circleSize} min={0} max={200} />
+					<Toggle bind:checked />
+				</Accordion>
+			</div>
+			<div id="sketch"><P5 userSketch={sketch} /></div>
 		</div>
-		<div id="sketch"><P5 userSketch={sketch} /></div>
-	</div>
-</P5Kit>
+	</P5Kit>
+</div>
 
 <img id="logo" src={Logo} alt="" />
 
@@ -85,7 +87,7 @@
 		width: 100vw;
 	}
 
-	:global(#p5kit) {
+	#page {
 		height: 100%;
 		width: 100%;
 		display: flex;

@@ -17,8 +17,6 @@
 	let { children }: { children?: Snippet } = $props();
 </script>
 
-<div id="p5kit">
-	{#if children}
-		{@render children()}
-	{/if}
-</div>
+{#if children}
+	{@render children()}
+{/if}
