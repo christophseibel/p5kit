@@ -24,7 +24,7 @@
 	:global([data-accordion-root]) {
 		width: 100%;
 		height: fit-content;
-		box-sizing: border-box;
+		box-sizing: content-box;
 		background-color: light-dark(var(--gray-200), var(--gray-800));
 	}
 
@@ -45,12 +45,16 @@
 		color: light-dark(var(--gray-950), var(--gray-50));
 	}
 
-	:global([data-accordion-content][data-state='open']) #content {
-		animation: panel-in 160ms ease-out forwards;
+	:global([data-accordion-content]) {
+		overflow: hidden;
+		padding: 0 var(--ui-spacing) var(--ui-spacing);
+		flex-direction: column;
+		gap: var(--ui-spacing);
+		box-sizing: border-box;
 	}
 
-	:global([data-accordion-content][data-state='closed']) #content {
-		animation: panel-out 120ms ease-in forwards;
+	:global([data-accordion-content][data-state='open']) {
+		display: flex;
 	}
 
 	:global([data-accordion-content][data-state='open']) {
