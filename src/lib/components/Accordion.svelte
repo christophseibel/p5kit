@@ -47,7 +47,7 @@
 
 	:global([data-accordion-content]) {
 		overflow: hidden;
-		padding: 0 var(--ui-spacing) var(--ui-spacing);
+		padding: var(--ui-spacing);
 		flex-direction: column;
 		gap: var(--ui-spacing);
 		box-sizing: border-box;
@@ -55,9 +55,6 @@
 
 	:global([data-accordion-content][data-state='open']) {
 		display: flex;
-	}
-
-	:global([data-accordion-content][data-state='open']) {
 		animation: accordion-down 0.1s ease-out;
 	}
 
