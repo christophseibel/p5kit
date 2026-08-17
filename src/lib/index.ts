@@ -10,6 +10,10 @@ import ColorPicker from './components/ColorPicker.svelte';
 import Slider from './components/Slider.svelte';
 import Toggle from './components/Toggle.svelte';
 import FileUpload from './components/FileUpload.svelte';
+import Input from './components/Input.svelte';
+import Button from './components/Button.svelte';
+import Progress from './components/Progress.svelte';
+import Select from './components/Select.svelte';
 
 declare global {
 	interface Window {
@@ -21,4 +25,18 @@ type FileType = 'image' | 'json' | 'font' | 'model' | 'strings';
 type Sketch = (sketch: p5) => void;
 
 export type { Sketch, FileType };
-export { P5, P5Kit, ResolutionSelect, Export, Accordion, ColorPicker, Slider, Toggle, FileUpload };
+export {
+	P5,
+	P5Kit,
+	ResolutionSelect,
+	Export,
+	Accordion,
+	ColorPicker,
+	Slider,
+	Toggle,
+	FileUpload,
+	Input,
+	Button,
+	Progress,
+	Select
+};
