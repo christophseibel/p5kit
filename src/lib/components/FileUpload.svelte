@@ -19,13 +19,13 @@
 		file = $bindable<P5Type[T] | undefined>(undefined)
 	}: { accepts: T; file?: P5Type[T] | undefined } = $props();
 
-	const acceptString = {
+	const acceptString: Record<FileType, string> = {
 		image: 'image/*',
 		json: '.json',
 		font: 'font/*',
 		model: '.obj,.stl',
 		strings: '.txt'
-	} satisfies Record<FileType, string>;
+	};
 
 	const engine = getContext<Engine>('p5kit-engine');
 
