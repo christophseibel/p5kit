@@ -1,8 +1,6 @@
 <script lang="ts">
-	import ColorPicker, { ChromeVariant } from 'svelte-awesome-color-picker';
-	import type { RgbaColor } from 'svelte-awesome-color-picker';
+	import ColorPicker from 'svelte-awesome-color-picker';
 	import ColorPickerInput from './ColorPickerInput.svelte';
-	import Input from './Input.svelte';
 
 	let { hex = $bindable('#ff0000') } = $props();
 

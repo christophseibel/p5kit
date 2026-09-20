@@ -71,6 +71,7 @@
 					<ColorPicker bind:hex />
 					<Slider type="range" bind:value={circleSize} min={0} max={200} />
 					<Toggle bind:checked />
+					<FileUpload accepts={'image'} />
 				</Accordion>
 			</div>
 			<div id="sketch"><P5 userSketch={sketch} /></div>

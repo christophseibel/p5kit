@@ -5,7 +5,8 @@ import {
 	QUALITY_MEDIUM,
 	Mp4OutputFormat,
 	WebMOutputFormat,
-	BufferTarget
+	BufferTarget,
+	Quality
 } from 'mediabunny';
 import type { OutputFormat, VideoCodec } from 'mediabunny';
 
@@ -123,7 +124,7 @@ class Engine {
 
 			const canvasSource = new CanvasSource(this.canvas, {
 				codec: outputFormat?.codec || 'av1',
-				bitrate: QUALITY_MEDIUM
+				bitrate: new Quality('medium')
 			});
 
 			this.output.addVideoTrack(canvasSource);
