@@ -15,7 +15,7 @@
 	});
 </script>
 
-<div id="p5kit-colorpicker">
+<div class="p5kit-colorpicker">
 	<ColorPicker
 		bind:hex
 		components={{ input: ColorPickerInput }}
@@ -26,14 +26,14 @@
 		--cp-bg-color="light-dark(var(--gray-50),var(--gray-700))"
 		--cp-border-color="transparent"
 	/>
-	<div id="input">
+	<div class="p5kit-colorpicker-text">
 		<span>#</span>
 		<input type="text" bind:value={rawHex} />
 	</div>
 </div>
 
 <style>
-	#p5kit-colorpicker {
+	.p5kit-colorpicker {
 		width: 100%;
 		background-color: light-dark(var(--gray-300), var(--gray-700));
 		display: flex;
@@ -48,7 +48,7 @@
 		color: light-dark(var(--gray-400), var(--gray-500));
 	}
 
-	#input {
+	.p5kit-colorpicker-text {
 		display: flex;
 		align-items: center;
 		gap: 1px;

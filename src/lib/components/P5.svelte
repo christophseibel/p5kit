@@ -46,7 +46,6 @@
 	onMount(async () => {
 		const library = await import('p5');
 		const { default: p5 } = library;
-		p5.disableFriendlyErrors = disableFriendlyErrors;
 
 		// const entries = Object.entries(p5).filter(([key]) => key[0] !== '_');
 		// const nativeClasses = entries.filter(
@@ -60,6 +59,7 @@
 		userSketch = engine ? engine.wrap(userSketch) : userSketch;
 
 		kitSketch = new p5((instance: p5) => {
+			instance.disableFriendlyErrors = disableFriendlyErrors;
 			userSketch(instance);
 			const userSetup = instance.setup;
 			instance.setup = async () => {

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import type { ComponentProps } from 'svelte';
-	import { Slider, type WithoutChildren } from 'bits-ui';
-
-	type Props = WithoutChildren<ComponentProps<typeof Slider.Root>>;
+	import { Slider } from 'bits-ui';
 
 	type baseProps = {
 		min?: number;

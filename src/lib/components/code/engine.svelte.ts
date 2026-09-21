@@ -26,10 +26,7 @@ class Engine {
 	animationFrameCount = -1;
 	exportProgress = $state(0);
 
-	output = new Output({
-		format: new Mp4OutputFormat(),
-		target: new BufferTarget()
-	});
+	output: Output<OutputFormat, BufferTarget> | undefined = undefined;
 
 	wrap = (sketch: (p: p5) => void) => {
 		return (instance: p5) => {
@@ -163,7 +160,7 @@ class Engine {
 	}
 
 	async cancelVideoExport() {
-		await this.output.cancel().then(() => {
+		await this.output?.cancel().then(() => {
 			this.isExporting = false;
 			this.exportProgress = 0;
 

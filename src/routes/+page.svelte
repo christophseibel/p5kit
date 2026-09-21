@@ -10,10 +10,11 @@
 		Toggle,
 		FileUpload
 	} from '$lib/index.js';
+
 	import type p5 from 'p5';
 	import type { Sketch } from '$lib/index.js';
 
-	import { animate, engine, createTimeline, type Timeline } from 'animejs';
+	import { engine, createTimeline, type Timeline } from 'animejs';
 
 	import Logo from '$lib/assets/p5.kit-logo.svg';
 

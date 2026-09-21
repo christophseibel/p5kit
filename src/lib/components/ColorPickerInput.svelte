@@ -31,7 +31,6 @@
 			onmousedown={preventDefault}
 			aria-haspopup="dialog"
 		/>
-		<div class="alpha"></div>
 		<div class="color" style:background={hex}></div>
 	</div>
 	{label}
@@ -60,27 +59,11 @@
 		cursor: pointer;
 	}
 
-	.alpha {
-		clip-path: circle(50%);
-		background: var(--alpha-grid-bg);
-	}
-
-	.alpha,
 	.color {
 		position: absolute;
 		width: var(--input-size, 25px);
 		height: var(--input-size, 25px);
 		border-radius: 50%;
 		user-select: none;
-	}
-
-	.alpha {
-		width: calc(var(--input-size, 25px) - 2px);
-		height: calc(var(--input-size, 25px) - 2px);
-	}
-
-	input:focus-visible ~ .color {
-		outline: 2px solid var(--focus-color, red);
-		outline-offset: 2px;
 	}
 </style>

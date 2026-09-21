@@ -8,21 +8,11 @@
 	}: WithoutChildrenOrChild<Switch.RootProps> = $props();
 </script>
 
-<div id="toggle">
-	<Switch.Root bind:checked {id} {...restProps}>
-		<Switch.Thumb />
-	</Switch.Root>
-</div>
+<Switch.Root bind:checked {id} {...restProps}>
+	<Switch.Thumb />
+</Switch.Root>
 
 <style>
-	#toggle {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		align-items: center;
-		gap: var(--ui-padding);
-	}
-
 	:global([data-switch-root]) {
 		border-radius: 1rem;
 		height: 16px;

@@ -14,7 +14,7 @@
 	const labelId = useId();
 </script>
 
-<div id="progress">
+<div class="p5kit-progress">
 	<span id={labelId}> {label} </span>
 	<Progress.Root
 		aria-labelledby={labelId}
@@ -31,7 +31,7 @@
 </div>
 
 <style>
-	#progress {
+	.p5kit-progress {
 		display: flex;
 		flex-direction: row;
 		align-items: center;

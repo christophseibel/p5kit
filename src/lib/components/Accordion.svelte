@@ -46,7 +46,6 @@
 	}
 
 	:global([data-accordion-content]) {
-		overflow: hidden;
 		padding: var(--ui-spacing);
 		flex-direction: column;
 		gap: var(--ui-spacing);
@@ -63,42 +62,26 @@
 	}
 
 	@keyframes accordion-down {
-		from {
+		0% {
 			height: 0;
 		}
-		to {
+		99% {
 			height: var(--bits-accordion-content-height);
+		}
+		100% {
+			overflow: visible;
 		}
 	}
 
 	@keyframes accordion-up {
-		from {
+		0% {
 			height: var(--bits-accordion-content-height);
 		}
-		to {
+		99% {
 			height: 0;
 		}
-	}
-
-	@keyframes panel-in {
-		from {
-			transform: translateY(-4px) scaleY(0.98);
-			opacity: 0;
-		}
-		to {
-			transform: translateY(0) scaleY(1);
-			opacity: 1;
-		}
-	}
-
-	@keyframes panel-out {
-		from {
-			transform: translateY(0) scaleY(1);
-			opacity: 1;
-		}
-		to {
-			transform: translateY(-4px) scaleY(0.98);
-			opacity: 0;
+		100% {
+			overflow: hidden;
 		}
 	}
 
