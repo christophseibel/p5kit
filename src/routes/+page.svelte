@@ -75,7 +75,7 @@
 					<FileUpload accepts={'image'} />
 				</Accordion>
 			</div>
-			<div id="sketch"><P5 userSketch={sketch} /></div>
+			<div id="sketch"><P5 {sketch} /></div>
 		</div>
 	</P5Kit>
 </div>

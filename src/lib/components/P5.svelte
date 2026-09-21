@@ -4,7 +4,7 @@
 	import type { Engine } from './code/engine.svelte.ts';
 
 	interface SketchProps {
-		userSketch: (p: p5) => void;
+		sketch: (p: p5) => void;
 		disableFriendlyErrors?: boolean;
 		debug?: boolean;
 		onRef?: (el: HTMLElement) => void;
@@ -12,7 +12,7 @@
 	}
 
 	let {
-		userSketch,
+		sketch,
 		disableFriendlyErrors = true,
 		debug = false,
 		onRef = () => {},
@@ -56,11 +56,11 @@
 		// 	console.log('available p5 native classes', nativeClasses);
 		// }
 
-		userSketch = engine ? engine.wrap(userSketch) : userSketch;
+		sketch = engine ? engine.wrap(sketch) : sketch;
 
 		kitSketch = new p5((instance: p5) => {
 			instance.disableFriendlyErrors = disableFriendlyErrors;
-			userSketch(instance);
+			sketch(instance);
 			const userSetup = instance.setup;
 			instance.setup = async () => {
 				userSetup?.();

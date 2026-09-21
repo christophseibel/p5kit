@@ -46,7 +46,7 @@
 	}
 </script>
 
-<div id="file-upload">
+<div class="p5kit-upload">
 	<Button
 		onclick={() => {
 			inputElement?.click();
@@ -70,7 +70,7 @@
 </div>
 
 <style>
-	#file-upload {
+	.p5kit-upload {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
