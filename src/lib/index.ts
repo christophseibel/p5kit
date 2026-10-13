@@ -15,12 +15,6 @@ import Button from './components/Button.svelte';
 import Progress from './components/Progress.svelte';
 import Select from './components/Select.svelte';
 
-declare global {
-	interface Window {
-		_p5Instance: p5 | undefined;
-	}
-}
-
 type FileType = 'image' | 'json' | 'font' | 'model' | 'strings';
 type Sketch = (sketch: p5) => void;
 

@@ -23,38 +23,9 @@
 	let container: HTMLDivElement | undefined;
 	const engine = getContext<Engine | null>('p5kit-engine');
 
-	function ref(node: HTMLDivElement) {
-		container = node;
-		onRef(node);
-		return {
-			destroy() {
-				container = undefined;
-			}
-		};
-	}
-
-	/*function augmentClasses<NativeClasses extends [string, Record<string, any>][]>(
-		instance: p5,
-		classes: NativeClasses
-	) {
-		classes.forEach(([key, value]) => {
-			(instance as Record<string, any>)[key] = value;
-		});
-		return instance;
-	}*/
-
 	onMount(async () => {
 		const library = await import('p5');
 		const { default: p5 } = library;
-
-		// const entries = Object.entries(p5).filter(([key]) => key[0] !== '_');
-		// const nativeClasses = entries.filter(
-		// 	([key, value]) => typeof value === 'function' && key !== 'default'
-		// );
-
-		// if (debug) {
-		// 	console.log('available p5 native classes', nativeClasses);
-		// }
 
 		sketch = engine ? engine.wrap(sketch) : sketch;
 
@@ -66,9 +37,7 @@
 				userSetup?.();
 				await engine?.registerInstance(instance, container!);
 			};
-			// instance = augmentClasses(instance, nativeClasses);
 			if (debug) console.log('p5 instance', instance);
-			window._p5Instance = instance;
 		}, container);
 
 		onInstance(kitSketch);
@@ -80,7 +49,7 @@
 	});
 </script>
 
-<div use:ref id="p5kit-container"></div>
+<div bind:this={container} id="p5kit-container"></div>
 
 <style>
 	:global(canvas) {

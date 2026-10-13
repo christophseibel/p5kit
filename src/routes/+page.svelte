@@ -49,7 +49,7 @@
 </script>
 
 <div id="page">
-	<P5Kit>
+	<P5Kit baseStyles={false}>
 		<div id="container">
 			<div id="controls">
 				<ResolutionSelect

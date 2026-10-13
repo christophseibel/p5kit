@@ -14,7 +14,11 @@
 		}
 	});
 
-	let { children }: { children?: Snippet } = $props();
+	$effect(() => {
+		document.body.classList.toggle('baseStyles', baseStyles);
+	});
+
+	let { baseStyles = true, children }: { baseStyles: boolean; children?: Snippet } = $props();
 </script>
 
 {#if children}
