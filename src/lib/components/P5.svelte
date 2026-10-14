@@ -7,6 +7,7 @@
 		sketch: (p: p5) => void;
 		disableFriendlyErrors?: boolean;
 		debug?: boolean;
+		fillContainer?: boolean;
 		onRef?: (el: HTMLElement) => void;
 		onInstance?: (p5Instance: p5) => void;
 	}
@@ -15,12 +16,15 @@
 		sketch,
 		disableFriendlyErrors = true,
 		debug = false,
+		fillContainer = false,
 		onRef = () => {},
 		onInstance = () => {}
 	}: SketchProps = $props();
 
 	let kitSketch: p5 | undefined = undefined;
 	let container: HTMLDivElement | undefined;
+	let clientWidth = $state(0);
+	let clientHeight = $state(0);
 	const engine = getContext<Engine | null>('p5kit-engine');
 
 	onMount(async () => {
@@ -34,7 +38,7 @@
 			sketch(instance);
 			const userSetup = instance.setup;
 			instance.setup = async () => {
-				userSetup?.();
+				userSetup();
 				await engine?.registerInstance(instance, container!);
 			};
 			if (debug) console.log('p5 instance', instance);
@@ -43,13 +47,20 @@
 		onInstance(kitSketch);
 	});
 
+	$effect(() => {
+		if (fillContainer) {
+			console.log('resizing', clientWidth, clientHeight);
+			engine?.resizeCanvas(clientWidth, clientHeight);
+		}
+	});
+
 	onDestroy(() => {
 		kitSketch?.remove();
 		kitSketch = undefined;
 	});
 </script>
 
-<div bind:this={container} id="p5kit-container"></div>
+<div bind:this={container} bind:clientWidth bind:clientHeight id="p5kit-container"></div>
 
 <style>
 	:global(canvas) {

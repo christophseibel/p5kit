@@ -48,8 +48,8 @@
 	};
 </script>
 
-<div id="page">
-	<P5Kit baseStyles={false}>
+<!-- <div id="page">
+	<P5Kit baseStyles={true}>
 		<div id="container">
 			<div id="controls">
 				<ResolutionSelect
@@ -78,6 +78,12 @@
 			<div id="sketch"><P5 {sketch} /></div>
 		</div>
 	</P5Kit>
+</div> -->
+
+<div id="page">
+	<P5Kit baseStyles={false}>
+		<P5 {sketch} fillContainer={true} />
+	</P5Kit>
 </div>
 
 <img id="logo" src={Logo} alt="" />
@@ -102,6 +108,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		/* background-color: green; */
 	}
 
 	#container {
