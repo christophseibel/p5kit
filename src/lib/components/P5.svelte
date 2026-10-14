@@ -60,7 +60,7 @@
 	});
 </script>
 
-<div bind:this={container} bind:clientWidth bind:clientHeight id="p5kit-container"></div>
+<div bind:this={container} bind:clientWidth bind:clientHeight class="p5kit-container"></div>
 
 <style>
 	:global(canvas) {
