@@ -8,6 +8,7 @@
 		disableFriendlyErrors?: boolean;
 		debug?: boolean;
 		fillContainer?: boolean;
+		play?: boolean;
 		onRef?: (el: HTMLElement) => void;
 		onInstance?: (p5Instance: p5) => void;
 	}
@@ -17,6 +18,7 @@
 		disableFriendlyErrors = true,
 		debug = false,
 		fillContainer = false,
+		play = true,
 		onRef = () => {},
 		onInstance = () => {}
 	}: SketchProps = $props();
@@ -26,6 +28,14 @@
 	let clientWidth = $state(0);
 	let clientHeight = $state(0);
 	const engine = getContext<Engine | null>('p5kit-engine');
+
+	$effect(() => {
+		if (!play) {
+			kitSketch?.noLoop();
+		} else {
+			kitSketch?.loop();
+		}
+	});
 
 	onMount(async () => {
 		const library = await import('p5');

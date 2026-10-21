@@ -22,6 +22,7 @@
 	let circleSize: [number, number] = $state([20, 100]);
 	let position = { x: 0, y: 0 };
 	let checked = $state(false);
+	let play = $state(true);
 
 	engine.useDefaultMainLoop = false;
 	engine.defaults.frameRate = 60;
@@ -48,7 +49,7 @@
 	};
 </script>
 
-<!-- <div id="page">
+<div id="page">
 	<P5Kit baseStyles={true}>
 		<div id="container">
 			<div id="controls">
@@ -72,19 +73,20 @@
 					<ColorPicker bind:hex />
 					<Slider type="range" bind:value={circleSize} min={0} max={200} />
 					<Toggle bind:checked />
+					<Toggle bind:checked={play} />
 					<FileUpload accepts={'image'} />
 				</Accordion>
 			</div>
-			<div id="sketch"><P5 {sketch} /></div>
+			<div id="sketch"><P5 {sketch} {play} /></div>
 		</div>
 	</P5Kit>
-</div> -->
+</div>
 
-<div id="page">
+<!-- <div id="page">
 	<P5Kit baseStyles={false}>
 		<P5 {sketch} fillContainer={true} />
 	</P5Kit>
-</div>
+</div> -->
 
 <img id="logo" src={Logo} alt="" />
 
